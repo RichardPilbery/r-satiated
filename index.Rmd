@@ -1,0 +1,137 @@
+--- 
+title: "The title"
+author: "Richard Pilbery"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: article
+output: bookdown::word_document2
+bibliography: [references.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: RichardPilbery/generic-bookdown
+always_allow_html: yes
+toc: true
+geometry: margin=2cm
+header-includes:
+  \AtBeginDocument{\let\maketitle\relax}
+---
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+
+  library(readr)
+  background <- read_file("01-introduction.Rmd")
+  methods <- read_file("02-method.Rmd")
+  results <- read_file("03-results.Rmd")
+  discussion <- read_file("04-discussion.Rmd")
+  summary <- read_file("05-conclusion.Rmd")
+  
+  allwords <- paste(background, methods, results, discussion, summary)
+  
+  prep_text <- function(text){
+  
+    # remove all line breaks, http://stackoverflow.com/a/21781150/1036500
+    text <- gsub("[\r\n]", " ", text)
+  
+    # don't include front yaml
+    text <- gsub("---.*--- ", "", text)
+  
+    # don't include text in code chunks: https://regex101.com/#python
+    text <- gsub("```\\{.+?\\}.+?```", "", text)
+  
+    # don't include text in in-line R code
+    text <- gsub("`r.+?`", "", text)
+  
+    # don't include HTML comments
+    text <- gsub("<!--.+?-->", "", text)
+  
+    # don't include LaTeX comments
+    # how to do this? %%
+  
+    # don't include inline markdown URLs
+    text <- gsub("\\(http.+?\\)", "", text)
+  
+    # don't include images with captions
+    text <- gsub("!\\[.+?\\)", "", text)
+  
+    # don't include # for headings
+    text <- gsub("#*", "", text)
+  
+    # don't include html tags
+    text <- gsub("<.+?>|</.+?>", "", text)
+  
+      # don't include percent signs because they trip up stringi
+    text <- gsub("%", "", text)
+  
+    # don't include LaTeX \eggs{ham}
+    # how to do? problem with capturing \x
+  
+  
+    if(nchar(text) == 0){
+      stop("You have not selected any text. Please select some text with the mouse and try again")
+    } else {
+  
+    return(text)
+  
+    }
+  
+  }
+  
+  # https://stackoverflow.com/questions/8920145/count-the-number-of-words-in-a-string-in-r
+  library(stringr)
+  nwords <- function(string, pseudo=F){
+    ifelse( pseudo, 
+            pattern <- "\\S+", 
+            pattern <- "[[:alpha:]]+" 
+          )
+    str_count(string, pattern)
+  }
+  
+  numberOfWords <- nwords(prep_text(allwords))
+  
+```
+`r if (!knitr:::is_html_output()) '
+# The title goes here
+'`
+`r if (knitr:::is_html_output()) '
+# Preamble
+'`
+
+## Author information
+| **Richard Pilbery**
+| Research paramedic
+| Yorkshire Ambulance Service NHS Trust
+| Springhill, Brindley Way
+| Wakefield 41 Business Park
+| Wakefield
+| WF2 0XQ
+
+ORCID: [https://orcid.org/0000-0002-5797-9788](https://orcid.org/0000-0002-5797-9788)
+
+| email: r.pilbery@nhs.net
+| tel: 
+
+
+
+**Word count:** `r numberOfWords`
+
+**Keywords:** Keyword 1, keyword 2, keyword 3
+
+## Abstract
+
+### Introduction
+Intro
+
+### Methods
+Methods
+
+### Results
+Results
+
+### Conclusion
+Conclusion
+
+

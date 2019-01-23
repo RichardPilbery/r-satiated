@@ -1,0 +1,14 @@
+# Results
+
+```{r results, echo=F, message=F, warning=F}
+  # Use pandoc for Word documents
+  format="latex"
+
+  library(tidyverse)
+  library(knitr)
+  library(kableExtra)
+  library(broom) # https://cran.r-project.org/web/packages/broom/vignettes/broom.html
+
+
+```
+
