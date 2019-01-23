@@ -1,0 +1,145 @@
+---
+title: 'Soiled airway tracheal intubation and the effectiveness of decontamination (SATIATED) by paramedics: A randomised controlled manikin study'
+author: "RP"
+date: "23/11/2018"
+output:
+  word_document: default
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+  library(tidyverse)
+  satiated_data2 <- readRDS("data.rds")
+  
+```
+
+
+## Background
+	
+In more than one-in-five cases of out-of-hospital cardiac arrest, the patient's airway is soiled by vomit and blood. If a paramedic cannot clear the airway, the patient will die. A new method of clearing the airway called suction assisted laryngoscopy airway decontamination (SALAD) has been used in patients to help facillitate tracheal intubation, but it's not known whether the method can assist paramedics. This study aims to determine whether paramedics can intubate a soiled airway more often on their first attempt, using SALAD.
+
+
+## Methods
+
+A specially modified advanced airway manikin connected to a reservoir of 'vomit' was used to simulate a soiled airway. The intervention was a brief training session consisting of a demonstration and opportunity to practice SALAD. Participants were randomly allocated into two groups: AAB who made two pre-training intubation attempts and one post-training attempt, and ABB, who made one pre-training and two post-training attemps, to adjust for improvement in performance due to repetition. 
+
+```{r reults, echo=F, results=F, warning=F }
+  demographics <- satiated_data2 %>%
+  group_by(randomseq) %>%
+  summarise(
+    total = n(),
+    intubation_attempts_past_12_months = median(intattempts),
+    IQR_intubation_attempts_past_12_months = paste(fivenum(intattempts)[2],fivenum(intattempts)[4],sep="-"),
+    max_intubation_attempts_past_12_months = max(intattempts),
+    successful_intubation_attempts_past_12_months = median(succintattempt),
+    IQR_successful_intubation_attempts_past_12_months = paste(fivenum(succintattempt)[2],fivenum(succintattempt)[4],sep="-"),
+    max_successful_intubation_attempts_past_12_months = max(succintattempt),
+    years_as_paramedic = median(yearsqualify),
+    IQR_years_as_paramedic = paste(fivenum(yearsqualify)[2],fivenum(yearsqualify)[4],sep="-"),
+    familiar_SALAD_technique = sum(familiarSALAD == "yes"),
+    used_SALAD_in_last_3_months = sum(usedSALAD == "yes")
+  )
+
+demographicsTotal <- satiated_data2 %>%
+  summarise(
+    total = n(),
+    intubation_attempts_past_12_months = median(intattempts),
+    IQR_intubation_attempts_past_12_months = paste(fivenum(intattempts)[2],fivenum(intattempts)[4],sep="--"),
+    max_intubation_attempts_past_12_months = max(intattempts),
+    successful_intubation_attempts_past_12_months = median(succintattempt),
+    IQR_successful_intubation_attempts_past_12_months = paste(fivenum(succintattempt)[2],fivenum(succintattempt)[4],sep="--"),
+    max_successful_intubation_attempts_past_12_months = max(succintattempt),
+    years_as_paramedic = median(yearsqualify),
+    IQR_years_as_paramedic = paste(fivenum(yearsqualify)[2],fivenum(yearsqualify)[4],sep="--"),
+    familiar_SALAD_technique = sum(familiarSALAD == "yes"),
+    used_SALAD_in_last_3_months = sum(usedSALAD == "yes")
+  )
+
+results <- satiated_data2 %>%
+  group_by(randomseq) %>%
+  summarise(
+    n = n(),
+    number_successful_1st_attempt = sum(attempt1SuccessV=="yes"),
+    number_successful_2nd_attempt = sum(attempt2SuccessV=="yes"),
+    number_successful_3rd_attempt = sum(attempt3SuccessV=="yes"),
+    mean_diff_attempt_1_and_2 = mean(time_diff_attempt_1_and_2[attempt1SuccessV=="yes"&attempt2SuccessV=="yes"]),
+    mean_diff_attempt_1_and_3 = mean(time_diff_attempt_1_and_3[attempt1SuccessV=="yes"&attempt3SuccessV=="yes"]),
+    mean_attempt_time_1 = mean(attempt1intattemptCompletedV),
+    mean_attempt_time_2 = mean(attempt2intattemptCompletedV),
+    mean_attempt_time_3 = mean(attempt3intattemptCompletedV),
+    mean_succ_attempt_time_1 = mean(attempt1intattemptCompletedV[attempt1SuccessV=="yes"]),
+    mean_succ_attempt_time_2 = mean(attempt2intattemptCompletedV[attempt2SuccessV=="yes"]),
+    mean_succ_attempt_time_3 = mean(attempt3intattemptCompletedV[attempt3SuccessV=="yes"])
+  )
+
+options(scipen = 999)
+primary_outcome <- prop.test(results$number_successful_2nd_attempt, results$n ,correct = F)
+
+diffPropPrimary <- primary_outcome$estimate[["prop 2"]]-primary_outcome$estimate[["prop 1"]]
+
+AAB <- satiated_data2 %>%
+  filter(randomseq == "AAB")
+
+ABB <- satiated_data2 %>%
+  filter(randomseq == "ABB")
+
+### ---- Compare Means of differences -----
+
+# Compare mean time differences of AAB and ABB attempts 1 and 2 i.e. (A01-A02) with (A11-B11)
+meanDiff1and2 <- t.test(AAB$tot_time_diff_attempt_1_and_2[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"], ABB$tot_time_diff_attempt_1_and_2[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"])
+
+sdDiff1and2x <- sd(AAB$tot_time_diff_attempt_1_and_2[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"])
+sdDiff1and2y <- sd(ABB$tot_time_diff_attempt_1_and_2[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"])
+
+# Compare mean time difference of AAB and ABB attempts 1 and 3 (A01-B01) with (A11-B12)
+meanDiff1and3 <- t.test(AAB$tot_time_diff_attempt_1_and_3[AAB$attempt1SuccessV=="yes"&AAB$attempt3SuccessV=="yes"], ABB$tot_time_diff_attempt_1_and_3[ABB$attempt1SuccessV=="yes"&ABB$attempt3SuccessV=="yes"])
+
+sdDiff1and3x <- sd(AAB$tot_time_diff_attempt_1_and_3[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"])
+sdDiff1and3y <- sd(ABB$tot_time_diff_attempt_1_and_3[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"])
+
+AABprop <- results %>%
+  filter(randomseq == "AAB")
+
+ABBprop <- results %>%
+  filter(randomseq == "ABB")
+
+number_obsABB = ABBprop$n
+number_obsAAB = AABprop$n
+
+# Compare the success rates between B01 and B12 to see whether practice following training improves intubation success rate
+secondary_outcome <- prop.test(c(AABprop$number_successful_3rd_attempt,ABBprop$number_successful_3rd_attempt), c(number_obsAAB,number_obsABB) ,correct = F)
+
+diffPropSecondary <- secondary_outcome$estimate[["prop 2"]]-secondary_outcome$estimate[["prop 1"]]
+
+threesig <- function(x, round=1) {
+  
+  y <- x
+  if(round == 1) {
+    y <- round(y, 2)
+  }
+  
+  y <- sprintf("%.2f", y)
+  
+  return(y)
+}
+
+```
+
+## Results
+
+`r nrow(satiated_data2)` paramedics took part in the study. First-pass intubation success with and without SALAD was `r round((primary_outcome$estimate[["prop 2"]]*100),1)`% vs `r round((primary_outcome$estimate[["prop 1"]]*100),1)`% respectively, a significant difference of `r round(diffPropPrimary*100,1)`% (95%CI `r paste(round(abs(primary_outcome$conf.int[2])*100,1),round(abs(primary_outcome$conf.int[1])*100,1),sep="--")`%, p=`r threesig(primary_outcome$p.value)`).
+
+The time to successful intubation on each attempt was x for AAB and y for ABB on the first attempt, x for AAB and y for ABB on the first attempt and x for AAB and y for ABB on the third attempt.
+
+There was a significant difference between groups AAB (n=`r demographics$total[1]`) and ABB (n=`r demographics$total[2]`) with respect to difference in time taken to perform a successful intubation on attempts 1 and 2 (mean `r threesig(meanDiff1and2$estimate[[1]])`, SD `r threesig(sdDiff1and2x)` vs mean `r threesig(meanDiff1and3$estimate[[2]])`, SD `r threesig(sdDiff1and2y)`, t(`r threesig(meanDiff1and2$parameter[[1]])`)=`r threesig(meanDiff1and2$statistic[[1]])`, p=`r threesig(meanDiff1and2$p.value[[1]])`), but not on attempts 1 and 3 (mean `r threesig(meanDiff1and3$estimate[[1]])`, SD `r threesig(sdDiff1and3x)` vs mean `r threesig(meanDiff1and3$estimate[[2]])`, SD `r threesig(sdDiff1and3y)`, t(`r threesig(meanDiff1and3$parameter[[1]])`)=`r threesig(meanDiff1and3$statistic[[1]])`, p=`r threesig(meanDiff1and3$p.value[[1]])`).
+
+ There was no significant difference in success rates on the third attempt between AAB and ABB `r round((secondary_outcome$estimate[["prop 2"]]*100),1)`% vs `r round((secondary_outcome$estimate[["prop 1"]]*100),1)`% respectively, a difference of `r round(diffPropSecondary*100,1)`% (95%CI `r paste(round(abs(secondary_outcome$conf.int[2])*100,1),round(abs(secondary_outcome$conf.int[1])*100,1),sep="--")`%, p=`r threesig(secondary_outcome$p.value)`).
+
+
+## Conclusions
+
+In this manikin study, following a brief training session, paramedics were able to intubate a soiled airway on their first attempt, significantly more often when using the SALAD techniques.
