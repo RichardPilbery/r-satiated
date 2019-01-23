@@ -10,7 +10,6 @@ biblio-style: apalike
 link-citations: yes
 github-repo: RichardPilbery/generic-bookdown
 always_allow_html: yes
-toc: true
 geometry: margin=2cm
 header-includes:
   \AtBeginDocument{\let\maketitle\relax}
