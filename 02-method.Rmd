@@ -1,2 +1,49 @@
 # Methods
-Methods blurb
+## Study design and participants
+This randomised controlled trial was conducted in Yorkshire Ambulance Service NHS Trust (YAS). Participants were NHS staff employed by YAS, who were Health and Care Professions Council (HCPC) registered paramedics at the time of enrolment in the study, authorised to intubate and who had received no SALAD training in the previous 3 months. Potential participants were excluded if they did not meet the inclusion criteria, were allergic to the 'vomit' ingredients or unwilling to provide consent to participate.
+
+## Randomisation
+In order to adjust for changes in participant performance by making repeated attempts at intubation, paramedics were randomised into either: making two pre-training intubation attempts and one post-training attempt (group AAB); or making one pre-training intubation attempt and two post-training attempts (ABB). Groups were evenly allocated (i.e. 1:1) using a block randomisation sequence provided by RANDOM.ORG. To distinguish between the training pathways and number of the assessed attempts, group AAB's attempts were denoted A~01~A~02~B~01~ and group ABBs, A~11~B~11~B~12~. It was not possible to blind participants or the researcher from the group allocation.
+
+## Intervention
+### SALAD manikin
+
+A modified TruCorp AirSim Advance airway manikin was used for the study as it has realistic airway anatomy and can be used for tracheal intubation training. The oesophagus of this manikin has been connected, via a hosepipe, to a bilge pump that is sited within a reservoir of simulated vomit (Figure \@ref(fig:figure1)). The vomit is water, coloured with food-grade colouring, and thickened with xanthan gum (a food additive). Once the bilge pump is switched on, it can generate a constant flow of liquid into the oropharynx, obscuring any view of the laryngeal inlet. The flow rate is controlled by a tap, which was calibrated to provide 1 L/min of vomit to the oropharynx of the manikin during intubation attempts. To keep vomit within the oropharynx, the left and right bronchi on the manikin have been occluded. 
+
+Standard intubation equipment, including personal protective equipment (PPE) and motorised suction, that is routinely used within YAS was provided for participants, and the study researcher acted as a competent assistant for the intubation attempts.
+
+```{r figure1, echo=F, warning=F, message=F, fig.cap="SALAD manikin setup used for the study", out.width="7in"}
+
+  knitr::include_graphics(rep("images/figure-1.jpg"))
+
+```
+
+### Procedure
+Once informed consent was obtained, paramedics were randomised into either group AAB or ABB. All attempts utilised direct laryngoscopy, which is the standard intubation technique within YAS. Prior to each intubation attempt, the manikin was primed with vomit to ensure the same level of oropharyngeal obstruction. All attempts were video recorded for timing accuracy.
+
+Participants were deemed to have begun their attempt once the bilge pump was turned on. The attempt will be considered over when either: the paramedic intubates the manikin and verbally confirms with the researcher that the attempt has been completed or; 90 seconds has elapsed or; the tracheal tube is placed into the oesophagus and the cuff is inflated while the pump is still running.
+
+If the tracheal tube was not in the trachea, with the cuff inflated and connected to a bag-valve device within 90 seconds, the attempt was considered a failure.
+
+Participants randomised into the two pre-training attempts group (AAB) made their second intubation attempt immediately following the first, and prior to the group training session. Once all participants completed their pre-training intubation attempt(s), the training session was delivered. The training intervention adopted the Advanced Life Support Group/Resuscitation Council 4-stage approach of skills teaching, comprising [@bullock_pocket_2008]:
+
+1.	A real-time demonstration of the SALAD technique by the researcher
+2.	A repeated demonstration with an explanation of the rationale of the steps taken when performing SALAD (not real-time)
+3.	Another demonstration of the SALAD technique conducted by the researcher, but guided by one of the participants
+4.	An attempt by the same participant who guided the researcher in the previous step, followed by a practice attempt by the other participants.
+
+Following the training session, participants made their post-training intubation attempt(s) conducted using the same method as for the pre-training intubation attempt(s). Participants randomised into the two post-training attempts (ABB), made their second attempt immediately following the first post-training attempt.
+
+## Outcomes
+The primary outcome is the difference in proportions of paramedic first-pass intubation success, before and after SALAD training
+The secondary outcomes are:
+•	Mean of the differences in intubation attempt times, between first and second intubation attempts, and between pre- and post-training attempts
+•	Difference in success rates between participants who have two post-training intubation attempts versus participants who only have one post-training intubation attempt.
+
+
+## Sample size
+
+
+## Randomisation
+
+
