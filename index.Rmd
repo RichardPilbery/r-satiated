@@ -7,6 +7,7 @@ documentclass: article
 output: bookdown::word_document2
 bibliography: [references.bib, packages.bib]
 biblio-style: apalike
+toc: no
 link-citations: yes
 github-repo: RichardPilbery/generic-bookdown
 always_allow_html: yes

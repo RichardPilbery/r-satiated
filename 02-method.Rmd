@@ -7,7 +7,6 @@ In order to adjust for changes in participant performance by making repeated att
 
 ## Intervention
 ### SALAD manikin
-
 A modified TruCorp AirSim Advance airway manikin was used for the study as it has realistic airway anatomy and can be used for tracheal intubation training. The oesophagus of this manikin has been connected, via a hosepipe, to a bilge pump that is sited within a reservoir of simulated vomit (Figure \@ref(fig:figure1)). The vomit is water, coloured with food-grade colouring, and thickened with xanthan gum (a food additive). Once the bilge pump is switched on, it can generate a constant flow of liquid into the oropharynx, obscuring any view of the laryngeal inlet. The flow rate is controlled by a tap, which was calibrated to provide 1 L/min of vomit to the oropharynx of the manikin during intubation attempts. To keep vomit within the oropharynx, the left and right bronchi on the manikin have been occluded. 
 
 Standard intubation equipment, including personal protective equipment (PPE) and motorised suction, that is routinely used within YAS was provided for participants, and the study researcher acted as a competent assistant for the intubation attempts.
@@ -37,13 +36,20 @@ Following the training session, participants made their post-training intubation
 ## Outcomes
 The primary outcome is the difference in proportions of paramedic first-pass intubation success, before and after SALAD training
 The secondary outcomes are:
-•	Mean of the differences in intubation attempt times, between first and second intubation attempts, and between pre- and post-training attempts
-•	Difference in success rates between participants who have two post-training intubation attempts versus participants who only have one post-training intubation attempt.
+
+-  Mean of the differences in intubation attempt times, between first and second intubation attempts, and between pre- and post-training attempts
+-  Difference in success rates between participants who have two post-training intubation attempts versus participants who only have one post-training intubation attempt.
 
 
+## Statistical analysis
 ## Sample size
+A sample size of 154 participants was calculated to be required to determine a change in the proportion of intubation success, from 0.25 in the pre-training group, to 0.50 in post-training group, with a power (1-$\beta$) of 90% and a significance level ($\alpha$) of 5%. Given that there is no literature to guide expected performance, a conservative estimate was made in consultation with an internationally recognised SALAD expert, Dr. James DuCanto (J.DuCanto, personal communication, April 26, 2018).
 
 
-## Randomisation
+### Primary outcome analysis
+To determine if the training has an effect and increases the success rate of intubation, the proportions of success in the groups who received no training before their 2nd intubation attempt (A~02~) was compared to those who did receive training before their 2nd intubation attempt (B~11~). Comparing the rates at these time points, controls for any learning effect due to participants making more than one attempt at intubation. The difference in the two proportions was analysed using a two independent samples proportion z-test, assuming a two-sided type 1 error rate of 5%.
+
+### Secondary outcome analysis
+Intubation times were truncated at 90 seconds. The mean of the differences (A~01~ – A~02~) were compared with the mean of differences (A~11~ – B~11~). The mean of the differences seen at the final measurements, (A~01~ – B~01~) were compared to (A~11~ – B~12~), to see if there were any differences between the two pathways, which might suggest that practice following the training, further improves the time to successful intubation. In addition, success rates between B~01~ and B~12~ attempts were compared to see whether practice following training improved intubation success rate. A Student’s t-test was utilised to test for the differences between mean pre- and post-training intubation attempt times, and a two independent samples proportion z-test to test the difference in success rates.
 
 

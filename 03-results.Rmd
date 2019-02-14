@@ -5,10 +5,344 @@
   format="latex"
 
   library(tidyverse)
+  library(readr)
   library(knitr)
   library(kableExtra)
   library(broom) # https://cran.r-project.org/web/packages/broom/vignettes/broom.html
 
+  satiated_data <- read_csv("data/SATIATED-Results - Sheet1.csv")
+  
+  
+  demographics <- satiated_data %>%
+  group_by(randomseq) %>%
+  summarise(
+    total = n(),
+    intubation_attempts_past_12_months = median(intattempts),
+    IQR_intubation_attempts_past_12_months = paste(fivenum(intattempts)[2],fivenum(intattempts)[4],sep="-"),
+    max_intubation_attempts_past_12_months = max(intattempts),
+    successful_intubation_attempts_past_12_months = median(succintattempt),
+    IQR_successful_intubation_attempts_past_12_months = paste(fivenum(succintattempt)[2],fivenum(succintattempt)[4],sep="-"),
+    max_successful_intubation_attempts_past_12_months = max(succintattempt),
+    years_as_paramedic = median(yearsqualify),
+    IQR_years_as_paramedic = paste(fivenum(yearsqualify)[2],fivenum(yearsqualify)[4],sep="-"),
+    familiar_SALAD_technique = sum(familiarSALAD == "yes"),
+    used_SALAD_in_last_3_months = sum(usedSALAD == "yes")
+  )
+
+
+demographicsTotal <- satiated_data %>%
+  summarise(
+    randomseq = "Total",
+    total = n(),
+    intubation_attempts_past_12_months = median(intattempts),
+    IQR_intubation_attempts_past_12_months = paste(fivenum(intattempts)[2],fivenum(intattempts)[4],sep="-"),
+    max_intubation_attempts_past_12_months = max(intattempts),
+    successful_intubation_attempts_past_12_months = median(succintattempt),
+    IQR_successful_intubation_attempts_past_12_months = paste(fivenum(succintattempt)[2],fivenum(succintattempt)[4],sep="-"),
+    max_successful_intubation_attempts_past_12_months = max(succintattempt),
+    years_as_paramedic = median(yearsqualify),
+    IQR_years_as_paramedic = paste(fivenum(yearsqualify)[2],fivenum(yearsqualify)[4],sep="-"),
+    familiar_SALAD_technique = sum(familiarSALAD == "yes"),
+    used_SALAD_in_last_3_months = sum(usedSALAD == "yes")
+  )
+
+  demofinal <- t(rbind(demographics, demographicsTotal, make.row.names=F, stringsAsFactors=F))
+  demofinal2 <- data.frame(demofinal, stringsAsFactors = F)
+  colnames(demofinal2) <- c("AAB", "ABB", "Total")
+  demofinal <- demofinal2
+  
+  finaldemodf <- data.frame(
+    Measure = c("n", "Median intubation attempts in past 12 months (IQR)", "Median number of successful intubation attempts in past 12 months (IQR)", "Median years as paramedic (IQR)", "Familiar with SALAD technique"),
+    AAB = c(demofinal$AAB[2], paste0(demofinal$AAB[3]," (",demofinal$AAB[4],")"), paste0(demofinal$AAB[6]," (",demofinal$AAB[7],")"), paste0(demofinal$AAB[9]," (",demofinal$AAB[10],")"), demofinal$AAB[11]),
+    ABB = c(demofinal$ABB[2], paste0(demofinal$ABB[3]," (",demofinal$ABB[4],")"), paste0(demofinal$ABB[6]," (",demofinal$ABB[7],")"), paste0(demofinal$ABB[9]," (",demofinal$ABB[10],")"), demofinal$ABB[11]),
+    Total = c(demofinal$Total[2], paste0(demofinal$Total[3]," (",demofinal$Total[4],")"), paste0(demofinal$Total[6]," (",demofinal$Total[7],")"), paste0(demofinal$Total[9]," (",demofinal$Total[10],")"), demofinal$Total[11]), stringsAsFactors = F
+  )
+  
 
 ```
 
+`r demographicsTotal$total` participants took part in SATIATED, with an equal number in groups AAB and ABB. The groups were similar with respect to intubation attempts (successful or not) undertaken in the previous 12 months. The median number of years as a paramedic was 1.5 years less in group ABB, although the interquartile range was similar. `r demographicsTotal$familiar_SALAD_technique` participants had heard of the SALAD technique prior to the study, with a slightly higher number in group ABB (Table \@ref(tab:demoTable)).
+
+
+```{r demoTable, echo=F, message=F, warning=F}
+
+  kable(finaldemodf, booktabs=T, format=format, caption="Summary details of participants") %>%
+    kable_styling("striped", latex_options = "striped")
+
+```
+
+```{r outcomes, warning=F, message=F, echo=F}
+
+  satiated_data2 <- satiated_data %>%
+  mutate(
+    # Truncate any overall attempt time greater than 90 seconds to 90 seconds
+    attempt1intattemptTotalV = ifelse(attempt1intattemptTotalV > 90, 90, attempt1intattemptTotalV),
+    attempt2intattemptTotalV = ifelse(attempt2intattemptTotalV > 90, 90, attempt2intattemptTotalV),
+    attempt3intattemptTotalV = ifelse(attempt3intattemptTotalV > 90, 90, attempt3intattemptTotalV),
+    # Truncate any intubation time greater than 90 seconds to 90 seconds/
+    attempt1intattemptCompletedV = ifelse(attempt1intattemptCompletedV > 90, 90, attempt1intattemptCompletedV),
+    attempt2intattemptCompletedV = ifelse(attempt2intattemptCompletedV > 90, 90, attempt2intattemptCompletedV),
+    attempt3intattemptCompletedV = ifelse(attempt3intattemptCompletedV > 90, 90, attempt3intattemptCompletedV),
+    proportion_successful_intubations = succintattempt/intattempts,
+    time_diff_attempt_1_and_2 = attempt1intattemptCompletedV-attempt2intattemptCompletedV,
+    time_diff_attempt_1_and_3 = attempt1intattemptCompletedV-attempt3intattemptCompletedV,
+    tot_time_diff_attempt_1_and_2 = attempt1intattemptTotalV-attempt2intattemptTotalV,
+    tot_time_diff_attempt_1_and_3 = attempt1intattemptTotalV-attempt3intattemptTotalV
+  )
+
+  results <- satiated_data2 %>%
+  group_by(randomseq) %>%
+  summarise(
+    n = n(),
+    success1and2 = sum(attempt1SuccessV=="yes"&attempt2SuccessV=="yes"),
+    success1and3 = sum(attempt1SuccessV=="yes"&attempt3SuccessV=="yes"),
+    number_successful_1st_attempt = sum(attempt1SuccessV=="yes"),
+    number_successful_2nd_attempt = sum(attempt2SuccessV=="yes"),
+    number_successful_3rd_attempt = sum(attempt3SuccessV=="yes"),
+    mean_diff_attempt_1_and_2 = mean(time_diff_attempt_1_and_2[attempt1SuccessV=="yes"&attempt2SuccessV=="yes"]),
+    mean_diff_attempt_1_and_3 = mean(time_diff_attempt_1_and_3[attempt1SuccessV=="yes"&attempt3SuccessV=="yes"]),
+    mean_tot_time_diff_attempt_1_and_2 = mean(tot_time_diff_attempt_1_and_2[attempt1SuccessV=="yes"&attempt2SuccessV=="yes"]),
+    mean_tot_time_diff_attempt_1_and_3 = mean(tot_time_diff_attempt_1_and_3[attempt1SuccessV=="yes"&attempt2SuccessV=="yes"]),
+    mean_attempt_time_1 = mean(attempt1intattemptCompletedV),
+    mean_attempt_time_2 = mean(attempt2intattemptCompletedV),
+    mean_attempt_time_3 = mean(attempt3intattemptCompletedV),
+    mean_succ_attempt_time_1 = mean(attempt1intattemptCompletedV[attempt1SuccessV=="yes"]),
+    mean_succ_attempt_time_2 = mean(attempt2intattemptCompletedV[attempt2SuccessV=="yes"]),
+    mean_succ_attempt_time_3 = mean(attempt3intattemptCompletedV[attempt3SuccessV=="yes"]),
+    tot_mean_attempt_time_1 = mean(attempt1intattemptTotalV),
+    tot_mean_attempt_time_2 = mean(attempt2intattemptTotalV),
+    tot_mean_attempt_time_3 = mean(attempt3intattemptTotalV),
+    tot_mean_succ_attempt_time_1 = mean(attempt1intattemptTotalV[attempt1SuccessV=="yes"]),
+    tot_mean_succ_attempt_time_2 = mean(attempt2intattemptTotalV[attempt2SuccessV=="yes"]),
+    tot_mean_succ_attempt_time_3 = mean(attempt3intattemptTotalV[attempt3SuccessV=="yes"])
+  )
+  
+  options(scipen = 999)
+  primary_outcome <- tidy(prop.test(results$number_successful_2nd_attempt, results$n ,correct = F))
+  
+  diffPropPrimary <- primary_outcome$estimate2-primary_outcome$estimate1
+  
+  AAB <- satiated_data2 %>%
+    filter(randomseq == "AAB")
+  
+  ABB <- satiated_data2 %>%
+    filter(randomseq == "ABB")
+  
+  ### ---- Compare Means of differences -----
+  
+  # Compare mean time differences of AAB and ABB attempts 1 and 2 i.e. (A01-A02) with (A11-B11)
+  tot_meanDiff1and2 <- tidy(t.test(AAB$tot_time_diff_attempt_1_and_2[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"], ABB$tot_time_diff_attempt_1_and_2[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"]))
+  
+  meanDiff1and2 <- tidy(t.test(AAB$time_diff_attempt_1_and_2[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"], ABB$time_diff_attempt_1_and_2[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"]))
+  
+  sdDiff1and2x <- sd(AAB$tot_time_diff_attempt_1_and_2[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"])
+  sdDiff1and2y <- sd(ABB$tot_time_diff_attempt_1_and_2[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"])
+  
+  # Compare mean time difference of AAB and ABB attempts 1 and 3 (A01-B01) with (A11-B12)
+  tot_meanDiff1and3 <- tidy(t.test(AAB$tot_time_diff_attempt_1_and_3[AAB$attempt1SuccessV=="yes"&AAB$attempt3SuccessV=="yes"], ABB$tot_time_diff_attempt_1_and_3[ABB$attempt1SuccessV=="yes"&ABB$attempt3SuccessV=="yes"]))
+  
+  meanDiff1and3 <- tidy(t.test(AAB$time_diff_attempt_1_and_3[AAB$attempt1SuccessV=="yes"&AAB$attempt3SuccessV=="yes"], ABB$time_diff_attempt_1_and_3[ABB$attempt1SuccessV=="yes"&ABB$attempt3SuccessV=="yes"]))
+  
+  sdDiff1and3x <- sd(AAB$tot_time_diff_attempt_1_and_3[AAB$attempt1SuccessV=="yes"&AAB$attempt3SuccessV=="yes"])
+  sdDiff1and3y <- sd(ABB$tot_time_diff_attempt_1_and_3[ABB$attempt1SuccessV=="yes"&ABB$attempt3SuccessV=="yes"])
+  
+  
+  ### --- Secondary outcome proportion successfyl on 3rd attempt ----
+  
+  secondary_outcome <- tidy(prop.test(results$number_successful_3rd_attempt, results$n ,correct = F))
+  
+  diffPropSecondary <- secondary_outcome$estimate2-secondary_outcome$estimate1
+  
+  threesig <- function(x, round=1) {
+    
+    y <- x
+    if(round == 1) {
+      y <- round(y, 2)
+    }
+    
+    y <- sprintf("%.2f", y)
+    
+    return(y)
+  }
+
+
+```
+
+
+First-pass intubation success with and without SALAD was `r round((primary_outcome$estimate1*100),1)`% vs `r round((primary_outcome$estimate2*100),1)`% respectively, a significant difference of `r round(diffPropPrimary*100,1)`% (95%CI `r paste(round(abs(primary_outcome$conf.high)*100,1),round(abs(primary_outcome$conf.low)*100,1),sep="--")`%, p=`r threesig(primary_outcome$p.value)`).
+
+```{r times, echo=F, warning=F, message=F}
+
+  timedf <- satiated_data2 %>%
+  select(randomseq, attempt1intattemptStartV, attempt2intattemptStartV, attempt3intattemptStartV, attempt1intattemptCompletedV, attempt1intattemptTotalV, attempt2intattemptCompletedV, attempt2intattemptTotalV, attempt3intattemptCompletedV, attempt3intattemptTotalV, attempt1SuccessV, attempt2SuccessV, attempt3SuccessV) %>%
+  mutate(
+    id = row_number()
+  ) %>%
+  gather(key, value, -randomseq, -id) %>%
+  mutate(
+    attempt = as.factor(substr(key,8,8))
+  ) %>%
+  group_by(id, randomseq, attempt) %>%
+  summarise(
+    success = ifelse(value[grepl("Success",key)] == "yes", 1, 0),
+    time_to_int = as.integer(value[grepl("Start", key)]),
+    tot_time = as.integer(value[grepl("Total",key)]),
+    int_time = as.integer(value[grepl("Completed",key)])
+  )
+
+timedf2 <- timedf %>%
+  mutate(
+    success = ifelse(success == 1, "Successful Intubation", "Failed Intubation")
+  )
+
+# Summary statistics for successful intubations
+timedf3 <- timedf %>%
+  filter(success==1) %>%
+  group_by(attempt, randomseq) %>%
+  summarise(
+    nsuccess = n(),
+    pcsuccess = nsuccess/82,
+    medt2int = median(time_to_int),
+    medint = median(int_time),
+    medtotal = median(tot_time),
+    lqtrt2int = fivenum(time_to_int)[2],
+    lqtrint = fivenum(int_time)[2],
+    lqtrtotal = fivenum(tot_time)[2],
+    uqtrt2int = fivenum(time_to_int)[4],
+    uqtrint = fivenum(int_time)[4],
+    uqtrtotal = fivenum(tot_time)[4]
+  )
+
+```
+
+Figure \@ref(fig:boxplotint) summarises the intubation attempt times by participants in each randomisation sequence. The time to successful intubation for each attempt, stratified by randomisation sequence can be seen on Table \@ref(tab:summarytime), and 
+
+```{r summarytime, echo=F, warning=F, message=F}
+
+  summarytimedf <- data.frame(
+    Measure = c("Successful attempts n (%)", "Median elapsed time to intubation attempt secs (IQR)", "Median intubation attempt time secs (IQR)", "Median total attempt time secs (IQR)"),
+    AAB = c(paste0(timedf3$nsuccess[timedf3$attempt==1&timedf3$randomseq=="AAB"], " (",round(timedf3$pcsuccess[timedf3$attempt==1&timedf3$randomseq=="AAB"]*100,1),")"), 
+              paste0(timedf3$medt2int[timedf3$attempt==1&timedf3$randomseq=="AAB"]," (", timedf3$lqtrt2int[timedf3$attempt==1&timedf3$randomseq=="AAB"],"--",timedf3$uqtrt2int[timedf3$attempt==1&timedf3$randomseq=="AAB"], ")"),
+              paste0(timedf3$medint[timedf3$attempt==1&timedf3$randomseq=="AAB"]," (", timedf3$lqtrint[timedf3$attempt==1&timedf3$randomseq=="AAB"],"--",timedf3$uqtrint[timedf3$attempt==1&timedf3$randomseq=="AAB"], ")"),
+              paste0(timedf3$medtotal[timedf3$attempt==1&timedf3$randomseq=="AAB"]," (", timedf3$lqtrtotal[timedf3$attempt==1&timedf3$randomseq=="AAB"],"--",timedf3$uqtrtotal[timedf3$attempt==1&timedf3$randomseq=="AAB"], ")")
+  ),
+  ABB = c(paste0(timedf3$nsuccess[timedf3$attempt==1&timedf3$randomseq=="ABB"], " (",round(timedf3$pcsuccess[timedf3$attempt==1&timedf3$randomseq=="ABB"]*100,1),")"), 
+              paste0(timedf3$medt2int[timedf3$attempt==1&timedf3$randomseq=="ABB"]," (", timedf3$lqtrt2int[timedf3$attempt==1&timedf3$randomseq=="ABB"],"--",timedf3$uqtrt2int[timedf3$attempt==1&timedf3$randomseq=="ABB"], ")"),
+              paste0(timedf3$medint[timedf3$attempt==1&timedf3$randomseq=="ABB"]," (", timedf3$lqtrint[timedf3$attempt==1&timedf3$randomseq=="ABB"],"--",timedf3$uqtrint[timedf3$attempt==1&timedf3$randomseq=="ABB"], ")"),
+              paste0(timedf3$medtotal[timedf3$attempt==1&timedf3$randomseq=="ABB"]," (", timedf3$lqtrtotal[timedf3$attempt==1&timedf3$randomseq=="ABB"],"--",timedf3$uqtrtotal[timedf3$attempt==1&timedf3$randomseq=="ABB"], ")")
+  ),
+  AAB = c(paste0(timedf3$nsuccess[timedf3$attempt==2&timedf3$randomseq=="AAB"], " (",round(timedf3$pcsuccess[timedf3$attempt==2&timedf3$randomseq=="AAB"]*100,1),")"), 
+              paste0(timedf3$medt2int[timedf3$attempt==2&timedf3$randomseq=="AAB"]," (", timedf3$lqtrt2int[timedf3$attempt==2&timedf3$randomseq=="AAB"],"--",timedf3$uqtrt2int[timedf3$attempt==2&timedf3$randomseq=="AAB"], ")"),
+              paste0(timedf3$medint[timedf3$attempt==2&timedf3$randomseq=="AAB"]," (", timedf3$lqtrint[timedf3$attempt==2&timedf3$randomseq=="AAB"],"--",timedf3$uqtrint[timedf3$attempt==2&timedf3$randomseq=="AAB"], ")"),
+              paste0(timedf3$medtotal[timedf3$attempt==2&timedf3$randomseq=="AAB"]," (", timedf3$lqtrtotal[timedf3$attempt==2&timedf3$randomseq=="AAB"],"--",timedf3$uqtrtotal[timedf3$attempt==2&timedf3$randomseq=="AAB"], ")")
+  ),
+    ABB = c(paste0(timedf3$nsuccess[timedf3$attempt==2&timedf3$randomseq=="ABB"], " (",round(timedf3$pcsuccess[timedf3$attempt==2&timedf3$randomseq=="ABB"]*100,1),")"), 
+              paste0(timedf3$medt2int[timedf3$attempt==2&timedf3$randomseq=="ABB"]," (", timedf3$lqtrt2int[timedf3$attempt==2&timedf3$randomseq=="ABB"],"--",timedf3$uqtrt2int[timedf3$attempt==2&timedf3$randomseq=="ABB"], ")"),
+              paste0(timedf3$medint[timedf3$attempt==2&timedf3$randomseq=="ABB"]," (", timedf3$lqtrint[timedf3$attempt==2&timedf3$randomseq=="ABB"],"--",timedf3$uqtrint[timedf3$attempt==2&timedf3$randomseq=="ABB"], ")"),
+              paste0(timedf3$medtotal[timedf3$attempt==2&timedf3$randomseq=="ABB"]," (", timedf3$lqtrtotal[timedf3$attempt==2&timedf3$randomseq=="ABB"],"--",timedf3$uqtrtotal[timedf3$attempt==2&timedf3$randomseq=="ABB"], ")")
+  ),
+    AAB = c(paste0(timedf3$nsuccess[timedf3$attempt==3&timedf3$randomseq=="AAB"], " (",round(timedf3$pcsuccess[timedf3$attempt==3&timedf3$randomseq=="AAB"]*100,1),")"), 
+              paste0(timedf3$medt2int[timedf3$attempt==3&timedf3$randomseq=="AAB"]," (", timedf3$lqtrt2int[timedf3$attempt==3&timedf3$randomseq=="AAB"],"--",timedf3$uqtrt2int[timedf3$attempt==3&timedf3$randomseq=="AAB"], ")"),
+              paste0(timedf3$medint[timedf3$attempt==3&timedf3$randomseq=="AAB"]," (", timedf3$lqtrint[timedf3$attempt==3&timedf3$randomseq=="AAB"],"--",timedf3$uqtrint[timedf3$attempt==3&timedf3$randomseq=="AAB"], ")"),
+              paste0(timedf3$medtotal[timedf3$attempt==3&timedf3$randomseq=="AAB"]," (", timedf3$lqtrtotal[timedf3$attempt==3&timedf3$randomseq=="AAB"],"--",timedf3$uqtrtotal[timedf3$attempt==3&timedf3$randomseq=="AAB"], ")")
+  ),
+    ABB = c(paste0(timedf3$nsuccess[timedf3$attempt==3&timedf3$randomseq=="ABB"], " (",round(timedf3$pcsuccess[timedf3$attempt==3&timedf3$randomseq=="ABB"]*100,1),")"), 
+              paste0(timedf3$medt2int[timedf3$attempt==3&timedf3$randomseq=="ABB"]," (", timedf3$lqtrt2int[timedf3$attempt==3&timedf3$randomseq=="ABB"],"--",timedf3$uqtrt2int[timedf3$attempt==3&timedf3$randomseq=="ABB"], ")"),
+              paste0(timedf3$medint[timedf3$attempt==3&timedf3$randomseq=="ABB"]," (", timedf3$lqtrint[timedf3$attempt==3&timedf3$randomseq=="ABB"],"--",timedf3$uqtrint[timedf3$attempt==3&timedf3$randomseq=="ABB"], ")"),
+              paste0(timedf3$medtotal[timedf3$attempt==3&timedf3$randomseq=="ABB"]," (", timedf3$lqtrtotal[timedf3$attempt==3&timedf3$randomseq=="ABB"],"--",timedf3$uqtrtotal[timedf3$attempt==3&timedf3$randomseq=="ABB"], ")")
+  ), check.names = F
+  )
+
+
+  kable(summarytimedf, booktabs=T, format=format, caption="Summary data of successful intubation attempts") %>%
+    kable_styling("striped", latex_options = "striped") %>%
+    column_spec(1, width = "4cm") %>%
+    add_header_above(c(" " = 1, "Attempt 1" = 2, "Attempt 2" = 2, "Attempt 3" = 2))
+
+```
+
+
+```{r boxplotint, message=F, echo=F, warning=F, fig.cap="Intubation attempt times, stratified by randomisation sequence and intubation success"}
+
+ggplot(timedf2, aes(x = attempt, y = int_time, fill=randomseq)) +
+  geom_boxplot() +
+  facet_wrap(~success) +
+  theme_minimal() +
+  theme(legend.position="top") +
+  scale_fill_brewer(name="Randomisation sequence") +
+  scale_y_continuous(name="Intubation attempt time (seconds)", breaks = seq(0,90,10), limits=c(20,90)) +
+  scale_x_discrete(name="Attempt number")
+
+```
+
+```{r mdTable, message=F, warning=F, echo=F}
+
+  attemptDiff <- satiated_data2 %>%
+    mutate(
+      class1_2 = ifelse(attempt1SuccessV == "yes", ifelse(attempt2SuccessV=="yes","SS","SF"), ifelse(attempt2SuccessV=="yes","FS","FF")),
+      class1_3 = ifelse(attempt1SuccessV == "yes", ifelse(attempt3SuccessV=="yes","SS","SF"), ifelse(attempt3SuccessV=="yes","FS","FF"))
+    ) %>%
+    select(randomseq, class1_2, class1_3, time_diff_attempt_1_and_2, time_diff_attempt_1_and_3) %>%
+    filter(class1_2 == "SS" | class1_3 == "SS") %>%
+    gather(key, value, -randomseq, -class1_2, -class1_3) %>%
+    mutate(
+      one2two = ifelse(class1_2 == "SS" & key == "time_diff_attempt_1_and_2", value, NA),
+      one2three = ifelse(class1_3 == "SS" & key == "time_diff_attempt_1_and_3" , value, NA)
+    ) %>%
+    select(randomseq, one2two, one2three) %>%
+    gather(key, value, -randomseq) %>%
+    na.omit()
+
+lotsmeans <- attemptDiff %>%
+  group_by(key, randomseq) %>%
+  summarise(
+    n = n(),
+    mean = mean(value),
+    sd = sd(value)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
+  mutate_if(is.numeric, round, 1)
+
+```
+
+
+### Mean difference in successful intubation attempts
+There was a significant difference between groups AAB (n=`r results$success1and2[results$randomseq=="AAB"]`) and ABB (n=`r results$success1and2[results$randomseq=="ABB"]`) with respect to the mean difference in time taken to perform a successful intubation on attempts 1 and 2 (mean difference `r threesig(meanDiff1and2$estimate)` seconds, 95% CI `r threesig(meanDiff1and2$conf.low)`--`r threesig(meanDiff1and2$conf.high)` seconds, p=`r threesig(meanDiff1and2$p.value)`). There was no significant difference between groups AAB  (n=`r results$success1and3[results$randomseq=="AAB"]`) and ABB (n=`r results$success1and3[results$randomseq=="ABB"]`) with respect to mean difference in time taken to perform a successful intubation on attempts 1 and 3 (mean difference  `r threesig(meanDiff1and3$estimate)` seconds, 95% CI `r threesig(meanDiff1and3$conf.low)`--`r threesig(meanDiff1and3$conf.high)` seconds, p=`r threesig(meanDiff1and3$p.value)`)). Summary values for the mean differences are shown in Table \@ref(tab:lotsmeans).
+
+```{r lotsmeans, echo=F, warning=F, message=F}
+  
+  lotsmeans2 <- lotsmeans[c(3,4,1,2),-1] %>%
+  mutate(
+    ci = paste0(lower.ci, "--",upper.ci)
+  ) %>%
+  select(-lower.ci, -upper.ci)
+
+  colnames(lotsmeans2) <- c("group", "n", "mean difference (secs)", "standard deviation (secs)", "standard error (secs)", "95% CI")
+  
+  kable(lotsmeans2, booktabs=T, format=format, caption="Summary data of successful intubation attempts") %>%
+      kable_styling("striped", latex_options = "striped", full_width = F) %>%
+      group_rows("Attempts 1 and 2", 1, 2) %>%
+      group_rows("Attempts 1 and 3", 3, 4)
+
+```
+
+ There was no significant difference in success rates on the third attempt between AAB and ABB `r round((secondary_outcome$estimate2*100),1)`% vs `r round((secondary_outcome$estimate1*100),1)`% respectively, a difference of `r round(diffPropSecondary*100,1)`% (95%CI `r paste(round(abs(secondary_outcome$conf.high)*100,1),round(abs(secondary_outcome$conf.low)*100,1),sep="--")`%, p=`r threesig(secondary_outcome$p.value)`).
+ 
+ 
+### Other stuff
+
+-  Bougie use
+-  suction down tube
+-  Assistant hold bougie
+-  Oesophageal intubations
+-  Suction left in situ
+-  Hole not occluded
+ 
+ 
+ 
+ 
+ 
+ 
+ 

@@ -13,7 +13,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 
   library(tidyverse)
-  satiated_data2 <- readRDS("data.rds")
+  satiated_data2 <- readRDS("../data/data.rds")
   
 ```
 

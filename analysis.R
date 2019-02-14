@@ -2,7 +2,26 @@
 library(tidyverse)
 library(readr)
 library(networkD3)
-satiated_data <- read_csv("SATIATED-Results - Sheet1.csv")
+satiated_data <- read_csv("data/SATIATED-Results - Sheet1.csv")
+
+satiated_data2 <- satiated_data %>%
+  mutate(
+    # Truncate any overall attempt time greater than 90 seconds to 90 seconds
+    attempt1intattemptTotalV = ifelse(attempt1intattemptTotalV > 90, 90, attempt1intattemptTotalV),
+    attempt2intattemptTotalV = ifelse(attempt2intattemptTotalV > 90, 90, attempt2intattemptTotalV),
+    attempt3intattemptTotalV = ifelse(attempt3intattemptTotalV > 90, 90, attempt3intattemptTotalV),
+    # Truncate any intubation time greater than 90 seconds to 90 seconds/
+    attempt1intattemptCompletedV = ifelse(attempt1intattemptCompletedV > 90, 90, attempt1intattemptCompletedV),
+    attempt2intattemptCompletedV = ifelse(attempt2intattemptCompletedV > 90, 90, attempt2intattemptCompletedV),
+    attempt3intattemptCompletedV = ifelse(attempt3intattemptCompletedV > 90, 90, attempt3intattemptCompletedV),
+    proportion_successful_intubations = succintattempt/intattempts,
+    time_diff_attempt_1_and_2 = attempt1intattemptCompletedV-attempt2intattemptCompletedV,
+    time_diff_attempt_1_and_3 = attempt1intattemptCompletedV-attempt3intattemptCompletedV,
+    tot_time_diff_attempt_1_and_2 = attempt1intattemptTotalV-attempt2intattemptTotalV,
+    tot_time_diff_attempt_1_and_3 = attempt1intattemptTotalV-attempt3intattemptTotalV
+  )
+
+saveRDS(satiated_data2, "data/data.rds")
 
 # ---- Summarise the data ----
 
@@ -23,29 +42,9 @@ demographics <- satiated_data %>%
   )
 
 
-library(psych)
-
-satiated_data2 <- satiated_data %>%
-  mutate(
-    # Truncate any overall attempt time greater than 90 seconds to 90 seconds
-    attempt1intattemptTotalV = ifelse(attempt1intattemptTotalV > 90, 90, attempt1intattemptTotalV),
-    attempt2intattemptTotalV = ifelse(attempt2intattemptTotalV > 90, 90, attempt2intattemptTotalV),
-    attempt3intattemptTotalV = ifelse(attempt3intattemptTotalV > 90, 90, attempt3intattemptTotalV),
-    # Truncate any intubation time greater than 90 seconds to 90 seconds/
-    attempt1intattemptCompletedV = ifelse(attempt1intattemptCompletedV > 90, 90, attempt1intattemptCompletedV),
-    attempt2intattemptCompletedV = ifelse(attempt2intattemptCompletedV > 90, 90, attempt2intattemptCompletedV),
-    attempt3intattemptCompletedV = ifelse(attempt3intattemptCompletedV > 90, 90, attempt3intattemptCompletedV),
-    proportion_successful_intubations = succintattempt/intattempts,
-    time_diff_attempt_1_and_2 = attempt1intattemptCompletedV-attempt2intattemptCompletedV,
-    time_diff_attempt_1_and_3 = attempt1intattemptCompletedV-attempt3intattemptCompletedV,
-    tot_time_diff_attempt_1_and_2 = attempt1intattemptTotalV-attempt2intattemptTotalV,
-    tot_time_diff_attempt_1_and_3 = attempt1intattemptTotalV-attempt3intattemptTotalV
-  )
-
-saveRDS(satiated_data2, "data.rds")
-
 demographicsTotal <- satiated_data2 %>%
   summarise(
+    randomseq = "Total",
     total = n(),
     intubation_attempts_past_12_months = median(intattempts),
     IQR_intubation_attempts_past_12_months = paste(fivenum(intattempts)[2],fivenum(intattempts)[4],sep="-"),
@@ -59,9 +58,30 @@ demographicsTotal <- satiated_data2 %>%
     used_SALAD_in_last_3_months = sum(usedSALAD == "yes")
   )
 
+  demofinal <- t(rbind(demographics, demographicsTotal, make.row.names=F, stringsAsFactors=F))
+  demofinal2 <- data.frame(demofinal, stringsAsFactors = F)
+  colnames(demofinal2) <- c("AAB", "ABB", "Total")
+  demofinal <- demofinal2
+  
+  finaldemodf <- data.frame(
+    Measure = c("n", "Median intubation attempts in past 12 months (IQR)", "Median number of successful intubation attempts in past 12 months (IQR)", "Median years as paramedic (IQR)", "Familiar with SALAD technique"),
+    AAB = c(demofinal$AAB[2], paste0(demofinal$AAB[3]," (",demofinal$AAB[4],")"), paste0(demofinal$AAB[6]," (",demofinal$AAB[7],")"), paste0(demofinal$AAB[9]," (",demofinal$AAB[10],")"), demofinal$AAB[11]),
+    ABB = c(demofinal$ABB[2], paste0(demofinal$ABB[3]," (",demofinal$ABB[4],")"), paste0(demofinal$ABB[6]," (",demofinal$ABB[7],")"), paste0(demofinal$ABB[9]," (",demofinal$ABB[10],")"), demofinal$ABB[11]),
+    Total = c(demofinal$Total[2], paste0(demofinal$Total[3]," (",demofinal$Total[4],")"), paste0(demofinal$Total[6]," (",demofinal$Total[7],")"), paste0(demofinal$Total[9]," (",demofinal$Total[10],")"), demofinal$Total[11]), stringsAsFactors = F
+  )
+  
+
+  
+  
+### ------- Testing from here --------
+
+library(psych)
+
+
+
 pairs.panels(satiated_data2[c("intattempts","proportion_successful_intubations","yearsqualify")])
 
-# ---- Analyse the results ------
+### ---- Analyse the results ------
 
 results <- satiated_data2 %>%
   group_by(randomseq) %>%
@@ -82,13 +102,12 @@ results <- satiated_data2 %>%
     mean_succ_attempt_time_3 = mean(attempt3intattemptCompletedV[attempt3SuccessV=="yes"])
   )
 
-# ---- Primary Outcome ------
+### ---- Primary Outcome ------
 
 options(scipen = 999)
-primary_outcome <- prop.test(results$number_successful_2nd_attempt, results$n ,correct = F)
+primary_outcome <- tidy(prop.test(results$number_successful_2nd_attempt, results$n ,correct = F))
 
-
-# ---- Secondary Outcome -------
+### ---- Secondary Outcome -------
 
 hist(satiated_data2$attempt3intattemptCompletedV, breaks=20, density=10)
 hist(satiated_data2$attempt3intattemptTotalV[satiated_data2$attempt3SuccessV == "yes"], breaks=20, density=10) +
@@ -114,18 +133,11 @@ ABB <- satiated_data2 %>%
 
 ### ---- Compare Means of differences -----
 
-# Compare mean time differences of AAB and ABB attempts 1 and 2 i.e. (A01-A02) with (A11-B11)
-t.test(AAB$time_diff_attempt_1_and_2[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"], ABB$time_diff_attempt_1_and_2[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"])
+AAB <- satiated_data2 %>%
+  filter(randomseq == "AAB")
 
-# Compare mean time difference of AAB and ABB attempts 1 and 3 (A01-B01) with (A11-B12)
-t.test(AAB$time_diff_attempt_1_and_3[AAB$attempt1SuccessV=="yes"&AAB$attempt3SuccessV=="yes"], ABB$time_diff_attempt_1_and_3[ABB$attempt1SuccessV=="yes"&ABB$attempt3SuccessV=="yes"])
-
-## TOTAL
-# Compare mean time differences of AAB and ABB attempts 1 and 2 i.e. (A01-A02) with (A11-B11)
-t.test(AAB$tot_time_diff_attempt_1_and_2[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"], ABB$tot_time_diff_attempt_1_and_2[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"])
-
-# Compare mean time difference of AAB and ABB attempts 1 and 3 (A01-B01) with (A11-B12)
-t.test(AAB$tot_time_diff_attempt_1_and_3[AAB$attempt1SuccessV=="yes"&AAB$attempt3SuccessV=="yes"], ABB$tot_time_diff_attempt_1_and_3[ABB$attempt1SuccessV=="yes"&ABB$attempt3SuccessV=="yes"])
+ABB <- satiated_data2 %>%
+  filter(randomseq == "ABB")
 
 AABprop <- results %>%
   filter(randomseq == "AAB")
@@ -135,6 +147,21 @@ ABBprop <- results %>%
 
 number_obsABB = ABBprop$n
 number_obsAAB = AABprop$n
+
+tot_meanDiff1and2 <- tidy(t.test(AAB$tot_time_diff_attempt_1_and_2[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"], ABB$tot_time_diff_attempt_1_and_2[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"]))
+
+meanDiff1and2 <- tidy(t.test(AAB$time_diff_attempt_1_and_2[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"], ABB$time_diff_attempt_1_and_2[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"]))
+
+sdDiff1and2x <- sd(AAB$tot_time_diff_attempt_1_and_2[AAB$attempt1SuccessV=="yes"&AAB$attempt2SuccessV=="yes"])
+sdDiff1and2y <- sd(ABB$tot_time_diff_attempt_1_and_2[ABB$attempt1SuccessV=="yes"&ABB$attempt2SuccessV=="yes"])
+
+# Compare mean time difference of AAB and ABB attempts 1 and 3 (A01-B01) with (A11-B12)
+tot_meanDiff1and3 <- tidy(t.test(AAB$tot_time_diff_attempt_1_and_3[AAB$attempt1SuccessV=="yes"&AAB$attempt3SuccessV=="yes"], ABB$tot_time_diff_attempt_1_and_3[ABB$attempt1SuccessV=="yes"&ABB$attempt3SuccessV=="yes"]))
+
+meanDiff1and3 <- tidy(t.test(AAB$time_diff_attempt_1_and_3[AAB$attempt1SuccessV=="yes"&AAB$attempt3SuccessV=="yes"], ABB$time_diff_attempt_1_and_3[ABB$attempt1SuccessV=="yes"&ABB$attempt3SuccessV=="yes"]))
+
+sdDiff1and3x <- sd(AAB$tot_time_diff_attempt_1_and_3[AAB$attempt1SuccessV=="yes"&AAB$attempt3SuccessV=="yes"])
+sdDiff1and3y <- sd(ABB$tot_time_diff_attempt_1_and_3[ABB$attempt1SuccessV=="yes"&ABB$attempt3SuccessV=="yes"])
 
 # Compare the success rates between B01 and B12 to see whether practice following training improves intubation success rate
 secondary_outcome <- prop.test(c(AABprop$number_successful_3rd_attempt,ABBprop$number_successful_3rd_attempt), c(number_obsAAB,number_obsABB) ,correct = F)
@@ -180,11 +207,7 @@ ggplot(prepgg2[prepgg2$success=="yes",], aes(attempt, time, fill=randomseq)) +
   facet_wrap(~ metric)
 
 
-
-number_obsABB = ABBprop$n
-number_obsAAB = AABprop$n
-
-secondary_outcome <- prop.test(c(AABprop$number_successful_3rd_attempt,ABBprop$number_successful_3rd_attempt), c(number_obsAAB,number_obsABB) ,correct = F)
+secondary_outcome2 <- tidy(prop.test(results$number_successful_3rd_attempt, results$n ,correct = F))
 
 library(ggridges)
 
@@ -259,7 +282,7 @@ ggplot(data = sd4, aes(y=attempt)) +
   facet_wrap(~success)
 
 
-# SANKEY
+### ------ SANKEY ------
 
 rand2attempt1 <- satiated_data3 %>%
   mutate(
@@ -401,3 +424,108 @@ sd5b <- sd5 %>%
          facet.by = c("success") 
   )
        
+  
+### ------ Time plots ------
+  
+df <- readRDS('data/data.rds')  
+  
+timedf <- df %>%
+  select(randomseq, attempt1intattemptStartV, attempt2intattemptStartV, attempt3intattemptStartV, attempt1intattemptCompletedV, attempt1intattemptTotalV, attempt2intattemptCompletedV, attempt2intattemptTotalV, attempt3intattemptCompletedV, attempt3intattemptTotalV, attempt1SuccessV, attempt2SuccessV, attempt3SuccessV) %>%
+  mutate(
+    id = row_number()
+  ) %>%
+  gather(key, value, -randomseq, -id) %>%
+  mutate(
+    attempt = as.factor(substr(key,8,8))
+  ) %>%
+  group_by(id, randomseq, attempt) %>%
+  summarise(
+    success = ifelse(value[grepl("Success",key)] == "yes", 1, 0),
+    time_to_int = as.integer(value[grepl("Start", key)]),
+    tot_time = as.integer(value[grepl("Total",key)]),
+    int_time = as.integer(value[grepl("Completed",key)])
+  )
+
+timedf2 <- timedf %>%
+  mutate(
+    success = ifelse(success == 1, "Successful Intubation", "Failure Intubation")
+  )
+
+ggplot(timedf2, aes(x = attempt, y = tot_time, fill=randomseq)) +
+  geom_boxplot() +
+  facet_wrap(~success) +
+  theme_minimal() +
+  scale_fill_brewer(name="Randomisation\nsequence") +
+  scale_y_continuous(name="Time (seconds)", breaks = seq(0,90,10), limits=c(20,90)) +
+  scale_x_discrete(name="Attempt number")
+
+ggplot(timedf2, aes(x = attempt, y = int_time, fill=randomseq)) +
+  geom_boxplot() +
+  facet_wrap(~success) +
+  theme_minimal() +
+  theme(legend.position="top") +
+  scale_fill_brewer(name="Randomisation sequence") +
+  scale_y_continuous(name="Time (seconds)", breaks = seq(0,90,10), limits=c(20,90)) +
+  scale_x_discrete(name="Attempt number")
+
+
+#### ----- Summary table for results ------
+
+timedf3 <- timedf %>%
+  filter(success==1) %>%
+  group_by(attempt, randomseq) %>%
+  summarise(
+    nsuccess = n(),
+    pcsuccess = nsuccess/82,
+    medt2int = median(time_to_int),
+    medint = median(int_time),
+    medtotal = median(tot_time),
+    lqtrt2int = fivenum(time_to_int)[2],
+    lqtrint = fivenum(int_time)[2],
+    lqtrtotal = fivenum(tot_time)[2],
+    uqtrt2int = fivenum(time_to_int)[4],
+    uqtrint = fivenum(int_time)[4],
+    uqtrtotal = fivenum(tot_time)[4]
+  )
+
+
+#### ------ Plot Mean differences ------
+
+attemptDiff <- satiated_data %>%
+  mutate(
+    class1_2 = ifelse(attempt1SuccessV == "yes", ifelse(attempt2SuccessV=="yes","SS","SF"), ifelse(attempt2SuccessV=="yes","FS","FF")),
+    class1_3 = ifelse(attempt1SuccessV == "yes", ifelse(attempt3SuccessV=="yes","SS","SF"), ifelse(attempt3SuccessV=="yes","FS","FF"))
+  ) %>%
+  select(randomseq, class1_2, class1_3, time_diff_attempt_1_and_2, time_diff_attempt_1_and_3) %>%
+  filter(class1_2 == "SS" | class1_3 == "SS") %>%
+  gather(key, value, -randomseq, -class1_2, -class1_3) %>%
+  mutate(
+    one2two = ifelse(class1_2 == "SS" & key == "time_diff_attempt_1_and_2", value, NA),
+    one2three = ifelse(class1_3 == "SS" & key == "time_diff_attempt_1_and_3" , value, NA)
+  ) %>%
+  select(randomseq, one2two, one2three) %>%
+  gather(key, value, -randomseq) %>%
+  na.omit()
+
+lotsmeans <- attemptDiff %>%
+  group_by(key, randomseq) %>%
+  summarise(
+    n = n(),
+    mean = mean(value),
+    sd = sd(value)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
+  mutate_if(is.numeric, round, 1)
+  
+
+library(ggpubr)
+library(viridis)
+ggline(attemptDiff, x= "key", y = "value", size=1,
+       add = c("mean_ci"), add.params = list(size = 0.8),
+       palette = c("#00AFBB", "#222222"), color = "randomseq"
+)
+
+
+
