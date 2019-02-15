@@ -3,7 +3,7 @@
 This randomised controlled trial was conducted in Yorkshire Ambulance Service NHS Trust (YAS). Participants were NHS staff employed by YAS, who were Health and Care Professions Council (HCPC) registered paramedics at the time of enrolment in the study, authorised to intubate and who had received no SALAD training in the previous 3 months. Potential participants were excluded if they did not meet the inclusion criteria, were allergic to the 'vomit' ingredients or unwilling to provide consent to participate.
 
 ## Randomisation
-In order to adjust for changes in participant performance by making repeated attempts at intubation, paramedics were randomised into either: making two pre-training intubation attempts and one post-training attempt (group AAB); or making one pre-training intubation attempt and two post-training attempts (ABB). Groups were evenly allocated (i.e. 1:1) using a block randomisation sequence provided by RANDOM.ORG. To distinguish between the training pathways and number of the assessed attempts, group AAB's attempts were denoted A~01~A~02~B~01~ and group ABBs, A~11~B~11~B~12~. It was not possible to blind participants or the researcher from the group allocation.
+In order to adjust for changes in participant performance that might arise from repeated attempts at intubation, paramedics were randomised into either: making two pre-training intubation attempts and one post-training attempt (group AAB); or making one pre-training intubation attempt and two post-training attempts (ABB). Groups were evenly allocated (i.e. 1:1) using a block randomisation sequence provided by RANDOM.ORG. To distinguish between the training pathways and number of the assessed attempts, group AAB's attempts were denoted A~01~A~02~B~01~ and group ABBs, A~11~B~11~B~12~. It was not possible to blind participants or the researcher from the group allocation.
 
 ## Intervention
 ### SALAD manikin
@@ -20,7 +20,7 @@ Standard intubation equipment, including personal protective equipment (PPE) and
 ### Procedure
 Once informed consent was obtained, paramedics were randomised into either group AAB or ABB. All attempts utilised direct laryngoscopy, which is the standard intubation technique within YAS. Prior to each intubation attempt, the manikin was primed with vomit to ensure the same level of oropharyngeal obstruction. All attempts were video recorded for timing accuracy.
 
-Participants were deemed to have begun their attempt once the bilge pump was turned on. The attempt will be considered over when either: the paramedic intubates the manikin and verbally confirms with the researcher that the attempt has been completed or; 90 seconds has elapsed or; the tracheal tube is placed into the oesophagus and the cuff is inflated while the pump is still running.
+Participants were deemed to have begun their attempt once the bilge pump was turned on. The attempt was considered to be over when either: the paramedic intubated the manikin and verbally confirmed with the researcher that the attempt had been completed or; 90 seconds had elapsed or; the tracheal tube was placed into the oesophagus and the cuff inflated while the pump was still running.
 
 If the tracheal tube was not in the trachea, with the cuff inflated and connected to a bag-valve device within 90 seconds, the attempt was considered a failure.
 
@@ -34,8 +34,8 @@ Participants randomised into the two pre-training attempts group (AAB) made thei
 Following the training session, participants made their post-training intubation attempt(s) conducted using the same method as for the pre-training intubation attempt(s). Participants randomised into the two post-training attempts (ABB), made their second attempt immediately following the first post-training attempt.
 
 ## Outcomes
-The primary outcome is the difference in proportions of paramedic first-pass intubation success, before and after SALAD training
-The secondary outcomes are:
+The primary outcome was the difference in proportions of paramedic first-pass intubation success, before and after SALAD training
+The secondary outcomes were:
 
 -  Mean of the differences in intubation attempt times, between first and second intubation attempts, and between pre- and post-training attempts
 -  Difference in success rates between participants who have two post-training intubation attempts versus participants who only have one post-training intubation attempt.
@@ -47,9 +47,9 @@ A sample size of 154 participants was calculated to be required to determine a c
 
 
 ### Primary outcome analysis
-To determine if the training has an effect and increases the success rate of intubation, the proportions of success in the groups who received no training before their 2nd intubation attempt (A~02~) was compared to those who did receive training before their 2nd intubation attempt (B~11~). Comparing the rates at these time points, controls for any learning effect due to participants making more than one attempt at intubation. The difference in the two proportions was analysed using a two independent samples proportion z-test, assuming a two-sided type 1 error rate of 5%.
+To determine if the training had an effect and increased the success rate of intubation, the proportions of success in the groups who received no training before their 2nd intubation attempt (A~02~) was compared to those who did receive training before their 2nd intubation attempt (B~11~). Comparing the rates at these time points, controlled for any learning effect due to participants making more than one attempt at intubation. The difference in the two proportions was analysed using a two independent samples proportion z-test, assuming a two-sided type 1 error rate of 5%.
 
 ### Secondary outcome analysis
-Intubation times were truncated at 90 seconds. The mean of the differences (A~01~ – A~02~) were compared with the mean of differences (A~11~ – B~11~). The mean of the differences seen at the final measurements, (A~01~ – B~01~) were compared to (A~11~ – B~12~), to see if there were any differences between the two pathways, which might suggest that practice following the training, further improves the time to successful intubation. In addition, success rates between B~01~ and B~12~ attempts were compared to see whether practice following training improved intubation success rate. A Student’s t-test was utilised to test for the differences between mean pre- and post-training intubation attempt times, and a two independent samples proportion z-test to test the difference in success rates.
+Intubation times were truncated at 90 seconds. The mean of the differences (A~01~ – A~02~) were compared with the mean of differences (A~11~ – B~11~). The mean of the differences seen at the final measurements, (A~01~ – B~01~) were compared to (A~11~ – B~12~), to see if there were any differences between the two pathways, which might suggest that practice following the training, further improved the time to successful intubation. In addition, success rates between B~01~ and B~12~ attempts were compared to see whether practice following training improved the intubation success rate. A Student’s t-test was utilised to test for the differences between mean pre- and post-training intubation attempt times, and a two independent samples proportion z-test to test the difference in success rates.
 
 

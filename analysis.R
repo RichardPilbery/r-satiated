@@ -429,8 +429,8 @@ sd5b <- sd5 %>%
   
 df <- readRDS('data/data.rds')  
   
-timedf <- df %>%
-  select(randomseq, attempt1intattemptStartV, attempt2intattemptStartV, attempt3intattemptStartV, attempt1intattemptCompletedV, attempt1intattemptTotalV, attempt2intattemptCompletedV, attempt2intattemptTotalV, attempt3intattemptCompletedV, attempt3intattemptTotalV, attempt1SuccessV, attempt2SuccessV, attempt3SuccessV) %>%
+timedf <- satiated_data2 %>%
+  select(randomseq, attempt1intattemptStartV, attempt2intattemptStartV, attempt3intattemptStartV, attempt1intattemptCompletedV, attempt1intattemptTotalV, attempt2intattemptCompletedV, attempt2intattemptTotalV, attempt3intattemptCompletedV, attempt3intattemptTotalV, attempt1SuccessV, attempt2SuccessV, attempt3SuccessV, bougie1, bougie2, bougie3) %>%
   mutate(
     id = row_number()
   ) %>%
@@ -443,7 +443,8 @@ timedf <- df %>%
     success = ifelse(value[grepl("Success",key)] == "yes", 1, 0),
     time_to_int = as.integer(value[grepl("Start", key)]),
     tot_time = as.integer(value[grepl("Total",key)]),
-    int_time = as.integer(value[grepl("Completed",key)])
+    int_time = as.integer(value[grepl("Completed",key)]),
+    bougie = ifelse(is.na(value[grep('bougie',key)]), 1, 0)
   )
 
 timedf2 <- timedf %>%
@@ -528,4 +529,70 @@ ggline(attemptDiff, x= "key", y = "value", size=1,
 )
 
 
+summaryExtras <- satiated_data2 %>%
+  group_by(randomseq) %>%
+  summarise(
+    bougie1 = sum(!is.na(bougie1)),
+    bougie2 = sum(!is.na(bougie2)),
+    bougie3 = sum(!is.na(bougie3)),
+    assthold1 = sum(!is.na(assthold1)),
+    assthold2 = sum(!is.na(assthold2)),
+    assthold3 = sum(!is.na(assthold3)),
+    sucinsitu1 = sum(!is.na(sucinsitu1)),
+    sucinsitu2 = sum(!is.na(sucinsitu2)),
+    sucinsitu3 = sum(!is.na(sucinsitu3)),
+    nohole1 = sum(!is.na(Nohole1)),
+    nohole2 = sum(!is.na(Nohole2)),
+    nohole3 = sum(!is.na(Nohole3))
+  )
+
+summaryExtras2 <- summaryExtras %>%
+  gather(key, value, -randomseq) %>%
+  mutate(
+    attempt = str_sub(key, -1, -1),
+    new_key = str_sub(key, 1, -2)
+  ) %>%
+  select(randomseq, new_key, value, attempt) %>%
+  mutate(
+    attempt = paste("Attempt ", attempt, sep=" ")
+  )
+
+
+ggplot(summaryExtras2, aes(x = new_key, y = value, fill = randomseq)) +
+  geom_bar(stat = "identity", position="dodge", colour="black") +
+  facet_wrap(~attempt) +
+  theme_minimal() +
+  theme(legend.position="top") +
+  scale_fill_brewer(name="Randomisation sequence") +
+  scale_y_continuous(name="Number", breaks = seq(0,15,1), limits=c(0,15)) +
+  scale_x_discrete(name="Characteristic", labels=c("Assistant\nheld\nsuction", "No bougie\nused", "Suction\nhole not\noccluded", "Suction left\nin situ"))
+
+ggplot(summaryExtras2, aes(x = new_key, y = value, fill = attempt)) +
+  geom_bar(stat = "identity", position="dodge") +
+  facet_wrap(~randomseq) +
+  theme_minimal() +
+  theme(legend.position="top") +
+  scale_fill_brewer(name="Randomisation sequence") +
+  scale_y_continuous(name="Number", breaks = seq(0,15,1), limits=c(0,15)) +
+  scale_x_discrete(name="Charateristic", labels=c("Assistant held suction", "No bougie used", "Suction hole not occluded", "Suction left in situ"))
+
+
+
+bougieProbe <- satiated_data2 %>%
+  select(bougie1, bougie2, bougie3, randomseq, attempt1SuccessV, attempt2SuccessV, attempt3SuccessV) %>%
+  mutate(
+    id = row_number()
+  ) %>%
+  gather(key, value, -randomseq, -id) %>%
+  mutate(
+    attempt = as.factor(ifelse(str_sub(key, 1, 6) == "bougie", str_sub(key,7,7) , substr(key,8,8)))
+  ) %>%
+  group_by(id, randomseq, attempt) %>%
+  summarise(
+    success = ifelse(value[grepl("Success",key)] == "yes", 1, 0),
+    bougie = ifelse(is.na(value[grepl("bougie", key)]), 1, 0)
+  ) %>%
+  ungroup() %>%
+  select(success, bougie) %>%
+  count(success, bougie)
 

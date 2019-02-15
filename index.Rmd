@@ -1,5 +1,5 @@
 --- 
-title: "The title"
+title: "SATIATED"
 author: "Richard Pilbery"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -94,7 +94,7 @@ knitr::write_bib(c(
   
 ```
 `r if (!knitr:::is_html_output()) '
-# The title goes here
+# Soiled Airway Tracheal Intubation and the Effectiveness of Decontamination by Paramedics (SATIATED): A randomised controlled manikin study-
 '`
 `r if (knitr:::is_html_output()) '
 # Preamble
@@ -114,7 +114,9 @@ ORCID: [https://orcid.org/0000-0002-5797-9788](https://orcid.org/0000-0002-5797-
 | email: r.pilbery@nhs.net
 | tel: 
 
-
+| **Dr. M. Dawn Teare**
+| Reader in Epidemiology and Biostatistics
+| University of Sheffield
 
 **Word count:** `r numberOfWords`
 
