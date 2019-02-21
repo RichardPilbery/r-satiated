@@ -193,7 +193,8 @@ First-pass intubation success with and without SALAD on the second attempt, was 
 timedf2 <- timedf %>%
   mutate(
     success = ifelse(success == 1, "Successful Intubation", "Failed Intubation")
-  )
+  ) %>%
+  filter(success == "Successful Intubation")
 
 # Summary statistics for successful intubations
 timedf3 <- timedf %>%
@@ -254,24 +255,33 @@ Figure \@ref(fig:boxplotint) summarises the intubation attempt times by particip
   )
 
 
-  kable(summarytimedf, booktabs=T, format=format, caption="Summary data of successful intubation attempts") %>%
+  kable(summarytimedf, booktabs=T, format=format, caption="Summary data of the differences between successful intubation attempts") %>%
     kable_styling("striped", latex_options = "striped") %>%
     column_spec(1, width = "4cm") %>%
-    add_header_above(c(" " = 1, "Attempt 1" = 2, "Attempt 2" = 2, "Attempt 3" = 2))
+    add_header_above(c(" " = 1, "Attempt 1" = 2, "Attempt 2" = 2, "Attempt 3" = 2)) %>%
+    footnote(general="In order to be included in this table, both attempts had to be successful.")
 
 ```
 
 
-```{r boxplotint, message=F, echo=F, warning=F, fig.cap="Intubation attempt times, stratified by randomisation sequence and intubation success"}
+```{r boxplotint, message=F, echo=F, warning=F, fig.cap="Intubation attempt times, stratified by randomisation sequence and attempt"}
+
+give.n <- function(x){
+  # https://stackoverflow.com/questions/3483203/create-a-boxplot-in-r-that-labels-a-box-with-the-sample-size-n
+  # Used data.frame instead of c so I could add 'n=' to label
+   #return(data.frame(y = (fivenum(x)[1])-2, label = paste0("n=",length(x))  ))
+    return(data.frame(y = 19, label = paste0("n=",length(x))  ))
+}
 
 ggplot(timedf2, aes(x = attempt, y = int_time, fill=randomseq)) +
   geom_boxplot() +
-  facet_wrap(~success) +
+  #facet_wrap(~success) +
   theme_minimal() +
   theme(legend.position="top") +
   scale_fill_brewer(name="Randomisation group") +
-  scale_y_continuous(name="Intubation attempt time (seconds)", breaks = seq(0,90,10), limits=c(20,90)) +
-  scale_x_discrete(name="Attempt number")
+  scale_y_continuous(name="Intubation attempt time (seconds)", breaks = seq(0,90,10), limits=c(15,90)) +
+  scale_x_discrete(name="Attempt number") +
+  stat_summary(fun.data = give.n, geom = "text", position = position_dodge(width = 0.75))
 
 ```
 
@@ -328,7 +338,7 @@ lotsmeans <- attemptDiff %>%
 ```
 
 
- There was a significant difference between groups AAB (n=`r results$success1and2[results$randomseq=="AAB"]`) and ABB (n=`r results$success1and2[results$randomseq=="ABB"]`) with respect to the mean difference in time taken to perform a successful intubation on attempts 1 and 2 (mean difference `r threesig(meanDiff1and2$estimate)` seconds, 95% CI `r threesig(meanDiff1and2$conf.low)`--`r threesig(meanDiff1and2$conf.high)` seconds, p=`r threesig(meanDiff1and2$p.value)`). There was no significant difference between groups AAB  (n=`r results$success1and3[results$randomseq=="AAB"]`) and ABB (n=`r results$success1and3[results$randomseq=="ABB"]`) with respect to mean difference in time taken to perform a successful intubation on attempts 1 and 3 (mean difference  `r threesig(meanDiff1and3$estimate)` seconds, 95% CI `r threesig(meanDiff1and3$conf.low)`--`r threesig(meanDiff1and3$conf.high)` seconds, p=`r threesig(meanDiff1and3$p.value)`)). Summary values for the mean differences are shown in Table \@ref(tab:lotsmeans). Finally, there was no significant difference in success rates on the third attempt between AAB and ABB `r round((secondary_outcome$estimate2*100),1)`% vs `r round((secondary_outcome$estimate1*100),1)`% respectively, a difference of `r round(diffPropSecondary*100,1)`% (95%CI `r paste(round(abs(secondary_outcome$conf.high)*100,1),round(abs(secondary_outcome$conf.low)*100,1),sep="--")`%, p=`r threesig(secondary_outcome$p.value)`).
+ There was a statistically significant difference between groups AAB (n=`r results$success1and2[results$randomseq=="AAB"]`) and ABB (n=`r results$success1and2[results$randomseq=="ABB"]`) with respect to the mean difference in time taken to perform a successful intubation on attempts 1 and 2 (mean difference `r threesig(meanDiff1and2$estimate)` seconds, 95% CI `r threesig(meanDiff1and2$conf.low)`--`r threesig(meanDiff1and2$conf.high)` seconds, p=`r threesig(meanDiff1and2$p.value)`). There was no significant difference between groups AAB  (n=`r results$success1and3[results$randomseq=="AAB"]`) and ABB (n=`r results$success1and3[results$randomseq=="ABB"]`) with respect to mean difference in time taken to perform a successful intubation on attempts 1 and 3 (mean difference  `r threesig(meanDiff1and3$estimate)` seconds, 95% CI `r threesig(meanDiff1and3$conf.low)`--`r threesig(meanDiff1and3$conf.high)` seconds, p=`r threesig(meanDiff1and3$p.value)`)). Summary values for the mean differences are shown in Table \@ref(tab:lotsmeans). Finally, there was no significant difference in success rates on the third attempt between AAB and ABB `r round((secondary_outcome$estimate2*100),1)`% vs `r round((secondary_outcome$estimate1*100),1)`% respectively, a difference of `r round(diffPropSecondary*100,1)`% (95%CI `r paste(round(abs(secondary_outcome$conf.high)*100,1),round(abs(secondary_outcome$conf.low)*100,1),sep="--")`%, p=`r threesig(secondary_outcome$p.value)`).
  
  
 ```{r techniquePrep, error=F, message=F, warning=F, echo=F}

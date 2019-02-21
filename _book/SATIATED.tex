@@ -84,7 +84,7 @@
   \postauthor{\par}
   \predate{\centering\large\emph}
   \postdate{\par}
-  \date{2019-02-15}
+  \date{2019-02-21}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -138,7 +138,7 @@ tel:
 Reader in Epidemiology and Biostatistics\\
 University of Sheffield
 
-\textbf{Word count:} 2680
+\textbf{Word count:} 2707
 
 \textbf{Keywords:} Keyword 1, keyword 2, keyword 3
 
@@ -327,19 +327,20 @@ following the first post-training attempt.
 \subsection{Outcomes}\label{outcomes}}
 
 The primary outcome was the difference in proportions of paramedic
-first-pass intubation success, before and after SALAD training The
-secondary outcomes were:
+first-pass intubation success, before and after SALAD training.
+
+The secondary outcomes were:
 
 \begin{itemize}
 \tightlist
 \item
-  Mean of the differences in intubation attempt times, between first and
-  second intubation attempts, and between pre- and post-training
-  attempts
+  Mean of the differences between groups AAB and ABB with respect to the
+  first and second successful intubation attempt times, and between the
+  first and third successful intubation attempt times
 \item
   Difference in success rates between participants who have two
-  post-training intubation attempts versus participants who only have
-  one post-training intubation attempt.
+  post-training intubation attempts (ABB) versus participants who only
+  have one post-training intubation attempt (AAB).
 \end{itemize}
 
 \hypertarget{statistical-analysis}{%
@@ -349,7 +350,7 @@ secondary outcomes were:
 \subsection{Sample size}\label{sample-size}}
 
 A sample size of 154 participants was calculated to be required to
-determine a change in the proportion of intubation success, from 0.25 in
+detect a change in the proportion of intubation successes, from 0.25 in
 the pre-training group, to 0.50 in post-training group, with a power
 (1-\(\beta\)) of 90\% and a significance level (\(\alpha\)) of 5\%.
 Given that there is no literature to guide expected performance, a
@@ -375,20 +376,22 @@ proportion z-test, assuming a two-sided type 1 error rate of 5\%.
 \subsubsection{Secondary outcome
 analysis}\label{secondary-outcome-analysis}}
 
-Intubation times were truncated at 90 seconds. The mean of the
-differences (A\textsubscript{01} -- A\textsubscript{02}) were compared
-with the mean of differences (A\textsubscript{11} --
-B\textsubscript{11}). The mean of the differences seen at the final
-measurements, (A\textsubscript{01} -- B\textsubscript{01}) were compared
-to (A\textsubscript{11} -- B\textsubscript{12}), to see if there were
-any differences between the two pathways, which might suggest that
-practice following the training, further improved the time to successful
-intubation. In addition, success rates between B\textsubscript{01} and
-B\textsubscript{12} attempts were compared to see whether practice
-following training improved the intubation success rate. A Student's
-t-test was utilised to test for the differences between mean pre- and
-post-training intubation attempt times, and a two independent samples
-proportion z-test to test the difference in success rates.
+Only successful intubation attempts and their timings were included in
+the secondary outcome analysis. The mean of the attempt time differences
+(A\textsubscript{01} -- A\textsubscript{02}) were compared with the mean
+of attempt time differences (A\textsubscript{11} --
+B\textsubscript{11}). In addition, the mean of the attempt time
+differences seen at the final measurements, (A\textsubscript{01} --
+B\textsubscript{01}) were compared to (A\textsubscript{11} --
+B\textsubscript{12}), to see if there were any differences between the
+two pathways, which might suggest that practice following the training,
+further improved the time to successful intubation. In addition, success
+rates between B\textsubscript{01} and B\textsubscript{12} attempts were
+compared to see whether practice following training improved the
+intubation success rate. A Student's t-test was utilised to test for the
+differences between mean pre- and post-training intubation attempt
+times, and a two independent samples proportion z-test to test the
+difference in success rates.
 
 \hypertarget{results-1}{%
 \section{Results}\label{results-1}}
@@ -434,7 +437,7 @@ intubated sooner (Table \ref{tab:summarytime}.
 \rowcolors{2}{gray!6}{white}
 \begin{table}
 
-\caption{\label{tab:summarytime}Summary data of successful intubation attempts}
+\caption{\label{tab:summarytime}Summary data of the differences between successful intubation attempts}
 \centering
 \begin{tabular}[t]{>{\raggedright\arraybackslash}p{4cm}llllll}
 \hiderowcolors
@@ -449,6 +452,8 @@ Median elapsed time to intubation attempt secs (IQR) & 7 (4--13) & 6 (3--11) & 4
 Median intubation attempt time secs (IQR) & 54 (46--61) & 50 (40.5--58.5) & 40.5 (32.5--57.5) & 44 (39--53) & 47 (40--54) & 41 (35--50)\\
 Median total attempt time secs (IQR) & 63 (52--74) & 59 (48.5--70.5) & 49 (37.5--61.5) & 47.5 (43--58) & 51 (43.5--58) & 44 (38--52)\\
 \bottomrule
+\multicolumn{7}{l}{\textbf{Note: } }\\
+\multicolumn{7}{l}{In order to be included in this table, both attempts had to be successful.}\\
 \end{tabular}
 \end{table}
 \rowcolors{2}{white}{white}
@@ -457,7 +462,7 @@ Median total attempt time secs (IQR) & 63 (52--74) & 59 (48.5--70.5) & 49 (37.5-
 \centering
 \includegraphics{SATIATED_files/figure-latex/boxplotint-1.pdf}
 \caption{\label{fig:boxplotint}Intubation attempt times, stratified by
-randomisation sequence and intubation success}
+randomisation sequence and attempt}
 \end{figure}
 
 \hypertarget{mean-difference-in-successful-intubation-attempts}{%

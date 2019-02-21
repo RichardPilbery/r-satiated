@@ -34,22 +34,24 @@ Participants randomised into the two pre-training attempts group (AAB) made thei
 Following the training session, participants made their post-training intubation attempt(s) conducted using the same method as for the pre-training intubation attempt(s). Participants randomised into the two post-training attempts (ABB), made their second attempt immediately following the first post-training attempt.
 
 ## Outcomes
-The primary outcome was the difference in proportions of paramedic first-pass intubation success, before and after SALAD training
+The primary outcome was the difference in proportions of paramedic first-pass intubation success, before and after SALAD training.
+
+
 The secondary outcomes were:
 
--  Mean of the differences in intubation attempt times, between first and second intubation attempts, and between pre- and post-training attempts
--  Difference in success rates between participants who have two post-training intubation attempts versus participants who only have one post-training intubation attempt.
+-  Mean of the differences between groups AAB and ABB with respect to the first and second successful intubation attempt times, and between the first and third successful intubation attempt times
+-  Difference in success rates between participants who have two post-training intubation attempts (ABB) versus participants who only have one post-training intubation attempt (AAB).
 
 
 ## Statistical analysis
 ## Sample size
-A sample size of 154 participants was calculated to be required to determine a change in the proportion of intubation success, from 0.25 in the pre-training group, to 0.50 in post-training group, with a power (1-$\beta$) of 90% and a significance level ($\alpha$) of 5%. Given that there is no literature to guide expected performance, a conservative estimate was made in consultation with an internationally recognised SALAD expert, Dr. James DuCanto (J.DuCanto, personal communication, April 26, 2018).
+A sample size of 154 participants was calculated to be required to detect a change in the proportion of intubation successes, from 0.25 in the pre-training group, to 0.50 in post-training group, with a power (1-$\beta$) of 90% and a significance level ($\alpha$) of 5%. Given that there is no literature to guide expected performance, a conservative estimate was made in consultation with an internationally recognised SALAD expert, Dr. James DuCanto (J.DuCanto, personal communication, April 26, 2018).
 
 
 ### Primary outcome analysis
 To determine if the training had an effect and increased the success rate of intubation, the proportions of success in the groups who received no training before their 2nd intubation attempt (A~02~) was compared to those who did receive training before their 2nd intubation attempt (B~11~). Comparing the rates at these time points, controlled for any learning effect due to participants making more than one attempt at intubation. The difference in the two proportions was analysed using a two independent samples proportion z-test, assuming a two-sided type 1 error rate of 5%.
 
 ### Secondary outcome analysis
-Intubation times were truncated at 90 seconds. The mean of the differences (A~01~ – A~02~) were compared with the mean of differences (A~11~ – B~11~). The mean of the differences seen at the final measurements, (A~01~ – B~01~) were compared to (A~11~ – B~12~), to see if there were any differences between the two pathways, which might suggest that practice following the training, further improved the time to successful intubation. In addition, success rates between B~01~ and B~12~ attempts were compared to see whether practice following training improved the intubation success rate. A Student’s t-test was utilised to test for the differences between mean pre- and post-training intubation attempt times, and a two independent samples proportion z-test to test the difference in success rates.
+Only successful intubation attempts and their timings were included in the secondary outcome analysis. The mean of the attempt time differences (A~01~ – A~02~) were compared with the mean of attempt time differences (A~11~ – B~11~). In addition, the mean of the attempt time differences seen at the final measurements, (A~01~ – B~01~) were compared to (A~11~ – B~12~), to see if there were any differences between the two pathways, which might suggest that practice following the training, further improved the time to successful intubation. In addition, success rates between B~01~ and B~12~ attempts were compared to see whether practice following training improved the intubation success rate. A Student’s t-test was utilised to test for the differences between mean pre- and post-training intubation attempt times, and a two independent samples proportion z-test to test the difference in success rates.
 
 
