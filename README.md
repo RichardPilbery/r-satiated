@@ -5,7 +5,7 @@ Soiled Airway Tracheal Intubation and the Effectiveness of Decontamination by Pa
 SATIATED is a randomised trial which aims to determine whether paramedic first-pass intubation success of a simulated contaminated airway improves following training in Suction Assisted Laryngoscopy and Airway Decontamination (SALAD).
 
 ## Can I replicate the data analysis?
-Yes! I provided the raw data and created a docker image which will enable you to recreate the environment I used to undertake the analysis. Just follow these steps:
+Yes! I have provided the [raw data](https://github.com/RichardPilbery/r-satiated/raw/master/data/SATIATED-Results%20-%20Sheet1.csv) and created a docker image which will enable you to recreate the environment I used to undertake the analysis. Just follow these steps:
 
 1. Install [Docker](https://www.docker.com/products/docker-desktop)
 2. Run Docker
