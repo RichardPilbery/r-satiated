@@ -4,15 +4,28 @@ Soiled Airway Tracheal Intubation and the Effectiveness of Decontamination by Pa
 ## What is the SATIATED study?
 SATIATED is a randomised trial which aims to determine whether paramedic first-pass intubation success of a simulated contaminated airway improves following training in Suction Assisted Laryngoscopy and Airway Decontamination (SALAD).
 
-## Why is this study being done?
-In more than one-in-five cases of out-of-hospital cardiac arrest, airways are blocked by vomit and blood. Sometimes, paramedics cannot clear the airway using methods they have been taught. If the airway cannot be cleared, the patient will die. Usually, these patients will have a breathing tube placed into their windpipe (intubation), as this provides protection from vomit and blood, but this can be difficult to perform when the airway is blocked. This is because, the paramedic needs to be able to see the entrance to the windpipe in order to successfully intubate.
+## Can I replicate the data analysis?
+Yes! I provided the raw data and created a docker image which will enable you to recreate the environment I used to undertake the analysis. Just follow these steps:
 
-A new method of clearing the airway called SALAD has been used in patients to help insert a breathing tube, but we don't know whether the method can help paramedics. However, to date there has only been one study specifically looking at the SALAD technique and the outcomes were self-reported confidence measures of trainees in using the technique. Other techniques have been described to manage significant airway contamination, including the use of a meconium aspirator (normally only used in newborn babies) which is not practical in the out-of-hospital environment and requires a device that is not typically carried by UK ambulance services, and deliberate intubation of the gullet (oesophagus) to allow vomit to pass out of the mouth via the tube, instead of into the mouth. However, only one case report exists in support of this procedure.
-
-Prior to undertaking clinical studies, it is important to determine the feasibility of teaching the technique to paramedics in a brief training session, and testing whether it has a beneficial effect on paramedic intubation success. Training needs to be concise given the operational demands of the ambulance service at present, which is placing training time under increasing pressure. A training programme that required a whole day to undertake, for example, would not be pragmatic to implement.
+1. Install [Docker](https://www.docker.com/products/docker-desktop)
+2. Run Docker
+3. Copy the [Dockerfile](https://raw.githubusercontent.com/RichardPilbery/r-satiated/master/Dockerfile) and place it into an empty folder
+3. Open a terminal window (or Powershell in Windoze) and change the directory to match the folder that contains the Dockerfile
+4. Enter the following command: `docker build ./`
+5. This might take a while, but you should end with a comment like *Successfully built IMAGEID*
+6. Run the command: `docker run --rm -p  8787:8787 -e PASSWORD=password IMAGEID` where IMAGEID is the IMAGEID value from step 5
+7. Open a browser window and head to: *http://127.0.0.1:8787*. Log in with the username: rstudio and password: password
+8. In the browser window, you should see an RStudio environment. ![RStudio](https://github.com/RichardPilbery/r-satiated/raw/master/images/8-RStudio.png)
+9. Scroll down to find the project file, called *r-satiated.Rproj* and click it. ![Open project](https://github.com/RichardPilbery/r-satiated/raw/master/images/9-Open-the-project.png)
+10. Now find the *Session* menu option along the top of the page and select *Restart R*. ![Restart R](https://github.com/RichardPilbery/r-satiated/raw/master/images/10-Restart-R.png)
+11. In the top-right hand window, click on the Build tab and then by clicking on the triangle next to the Build Book button, choose the *bookdown::pdf_book* option. ![Build book](https://github.com/RichardPilbery/r-satiated/raw/master/images/11-Build-PDF.png)
+12. Be patient, this might take a minute, but once completed a new window with the rendered PDF should appear. ![View PDF](https://github.com/RichardPilbery/r-satiated/raw/master/images/12-View-PDF.png)
 
 ## Funding
 This study has been funded by a College of Paramedics small research grant. If you are a full member of the College, you are eligible to apply. Visit the [Research and Development Advisory Committee](https://www.collegeofparamedics.co.uk/college-governance/structure/research_and_audit_committee) page.
 
 ## Trial registration
 ClinicalTrials.gov identifier: [NCT03599687](https://clinicaltrials.gov/ct2/show/NCT03599687)
+
+## Acknowledgements
+This study could not have been undertaken without the support and participation of paramedics working for Yorkshire Ambulance Service NHS Trust. In addition, the study has been supported by the National Institute for Health Research Clinical Research Network: Yorkshire and Humber. Finally, thanks goes to Dr. Jim DuCanto for his advice and support.
