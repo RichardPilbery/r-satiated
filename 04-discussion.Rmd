@@ -1,32 +1,70 @@
 # Discussion
-In this manikin study, following a brief SALAD training session, more paramedics were able to intubate a soiled airway on their first attempt, compared to those without training (90.2% vs 53.7%, difference of 36.6%, 95%CI 24–49.1%, p<0.001). In addition, the mean difference in time taken to perform a successful intubation between groups was statistically signficant for on attempts 1 and 2 (mean difference 11.71 seconds, 95% CI 1.95– 21.47 seconds, p=0.02), but not attempts 1 and 3 (mean difference -2.52 seconds, 95% CI -11.64–6.61 seconds, p=0.58)). There was no statistically significant difference in success rates on the third attempt between AAB and ABB (89.0% vs 86.6%, difference 2.4%, 95%CI 7.6–12.4%, p=0.63).
+In this manikin study, following a brief SALAD training session, more paramedics were able to intubate a soiled airway on their first attempt, compared to those without training (90.2% vs 53.7%, difference of 36.6%, 95%CI 24–49.1%, p<0.001). In addition, the mean difference in time taken to perform a successful intubation between groups was statistically significant for on attempts 1 and 2 (mean difference 11.71 seconds, 95% CI 1.95– 21.47 seconds, p=0.02), but not attempts 1 and 3 (mean difference -2.52 seconds, 95% CI -11.64–6.61 seconds, p=0.58)). There was no statistically significant difference in success rates on the third attempt between AAB and ABB (89.0% vs 86.6%, difference 2.4%, 95%CI 7.6–12.4%, p=0.63).
 
 ## SALAD
-While evolution of the SALAD technqiue has occured as knowledge of the technique has spread, the essential principles as described by Jim DuCanto remain the same [REF]:
+While evolution of the SALAD technqiue has occured as knowledge of the technique has spread, the essential principles as described by Dr. Jim DuCanto remain the same [@ducanto_novel_2017]:
 
-1. Correct positioning of the patient for intubation success (e.g. external auditory meatus level with sternal notch)
-2. Holding the suction catheter (wide-bore, rigid) in a clenched-fisted right hand, with the distal end of the catheter pointing caudad and posterior, to enable manipulation of the tongue and mandible as required
-3. Leading with suction to enable identifcation of relevant anatomical structure (posterior portion of tongue, epiglottis, vallecular and laryngeal outlet) and following with the laryngoscope (particularly important with video laryngoscopes to avoid contaminating the optics)
-4. Once the laryngoscope is in the vallecular and a view of the laryngeal inlet has been obtained, the suction catheter is 'parked' in the top of the oesophagus to provide continuous suction during the remainder of the intubation attempt
-5. In order to facillitate placement of the tracheal tube, the suction catheter is moved across to the left-side of the mouth, which remaining in the oesophagus. This can be achieved by either sliding the catheter under the laryngoscope blade, or by briefly removing the catheter and inserting it to the left of the laryngoscope blade
-6. Intubate as normal, with or without a bougie
-7. Inflate the cuff on the tracheal tube to prevent further contamination of the lower airway
-8. Suction down the tracheal tube with a flexible suction catheter prior to ventilation.
+1.	Correct positioning of the patient for intubation success (e.g. external auditory meatus level with sternal notch)
+2.	Holding the suction catheter (wide-bore, rigid) in a clenched-fisted right hand, with the distal end of the catheter pointing caudad and posterior, to enable manipulation of the tongue and mandible as required
+3.	Leading with suction to enable identification of relevant anatomical structure (posterior portion of tongue, epiglottis, vallecular and laryngeal outlet) and following with the laryngoscope (particularly important with video laryngoscopes to avoid contaminating the optics)
+4.	Once the laryngoscope is in the vallecular and a view of the laryngeal inlet has been obtained, the suction catheter is 'parked' in the top of the oesophagus to provide continuous suction during the remainder of the intubation attempt
+5.	In order to facilitate placement of the tracheal tube, the suction catheter is moved across to the left-side of the mouth, ensuring that the tip remains in the oesophagus. This can be achieved by either sliding the catheter under the laryngoscope blade, or by briefly removing the catheter and inserting it to the left of the laryngoscope blade
+6.	Intubate as normal, with or without a bougie
+7.	Inflate the cuff on the tracheal tube to prevent further contamination of the lower airway
+8.	Suction down the tracheal tube with a flexible suction catheter prior to ventilation.
 
-The last step in this process typically takes 7--10 seconds to complete, a fact that was overlooked during the design of this study as has likely confounded the mean timing differences aimed at identification learning that occured from multiple attempts. None of the pre-training attempts finished with post-intubation suction, whereas 100% of the post-training attempts did. Successful intubations in group AAB did show timinig improvements between attempts 1 and 2, but the delay in intubation completion in the latter attempts, might explain why there appears to be no significant difference between attempts 1 and 3.
+
+The last step in this process typically takes 7–10 seconds to complete, a fact that was overlooked during the design of this study as it has likely confounded the mean timing differences aimed at identification learning that occurred from multiple attempts. None of the pre-training attempts finished with post-intubation suction, whereas 100% of the post-training attempts did. Successful intubations in group AAB did show timing improvements between attempts 1 and 2, but the delay in intubation completion in the latter attempts might explain why there appears to be no significant difference between attempts 1 and 3.
 
 ## Suction catheters
-The suction catheters used by YAS (Penine healthcare Link Yankauer 22ch with 6mm internal diameter tubing) have an internal diameter of approximately 6mm and include a vent hole. For this study, the vent hole was occluded by tape for the training and post-training attempts. Failure to occlude the vent hole did occur on occasion during some attempts, and this has been reported elsewhere. @cox_yankauer_2017 conducted a simulated soiled airway study with 37 emergency medicine residents, and found that 76% did not occlude the vent hole immediately on suctioning, with 60% having to be prompted to do so after 20 seconds. Catheters are available which do not contain a vent hole, which may make them more suitable for emergency situations. 
+The suction catheters used by YAS (Pennine Healthcare Link Yankauer 22ch with 6mm internal diameter tubing) have an internal diameter of approximately 6mm and include a vent hole. For this study, the vent hole was occluded by tape for the training and post-training attempts. Failure to occlude the vent hole did occur on occasion during some attempts, and this has been reported elsewhere. @cox_yankauer_2017 conducted a simulated soiled airway study with 37 emergency medicine residents, and found that 76% did not occlude the vent hole immediately on suctioning, with 60% having to be prompted to do so after 20 seconds. Catheters are available which do not contain a vent hole, which may make them more suitable for emergency situations.
 
-Occluding the vent hole also presented a challenge for participants who left the suction in situ while continiuing with an intubation attempt. While this strategy did make it easier to recommence suction when the vent hole was re-occluded by the participant, for the remainder of the attempt, the suction catheter restricted the view of the oropharynx. One alternative strategy that some participants did use, was to utilise the assistant to hold the suction in the oropharynx, thus maintaining continuous suction.
+Occluding the vent hole also presented a challenge for participants who left the suction in situ while continuing with an intubation attempt. While this strategy did make it easier to recommence suction when the vent hole was re-occluded by the participant, for the remainder of the attempt, the suction catheter restricted the view of the oropharynx. One alternative strategy that some participants did use, was to utilise the assistant to hold the suction in the oropharynx, thus maintaining continuous suction.
+
+
+```{r bougies, echo=F, warning=F, message=F}
+
+  bougie <- readRDS('data/bougie.rds')
+  nobougie <- sum(bougie$n[bougie$bougie==0])
+  
+  bougieStatAll <- bougie %>%
+    summarise(
+      total = sum(n),
+      nob = sum(n[bougie == 0]),
+      percentnob = round(nob/total*100,1)
+    )
+  
+  bougieStat <- bougie %>%
+    group_by(success) %>%
+    summarise(
+      total = sum(n),
+      nob = sum(n[bougie == 0]),
+      percentnob = round(nob/total*100,1)
+    )
+  
+  bougie2 <- readRDS('data/bougie2.rds') %>%
+    group_by(success) %>%
+    summarise(
+      total = sum(n),
+      nob = sum(n[bougie == 0]),
+      percentnob = round(nob/total*100,1)
+    )
+  
+   bsuccs = paste0(bougie2$nob[2],'/',bougie2$total[2],', (',bougie2$percentnob[2],'%)')
+   bfail = paste0(bougie2$nob[1],'/',bougie2$total[1],', (',bougie2$percentnob[1],'%)')
+
+````
 
 ## Bougies
-The Trust mandates the use of bougies as part of the intubation standard operating procedure. Bougies have been associated with improved first-pass intubation success [@kingma_comparison_2017; @driver_bougie_2017] in other studies. In YAS, paramedics are generally taught to 'railroad' the tracheal tube following successful bougie insertion through the vocal cords. Stylets are not used. In this study, most attempts did use a bougie, with the exception of 
+The Trust mandates the use of bougies as part of the intubation standard operating procedure. Bougies have been associated with improved first-pass intubation success [@kingma_comparison_2017; @driver_bougie_2017] in other studies. In YAS, paramedics are generally taught to 'railroad' the tracheal tube following successful bougie insertion through the vocal cords. Stylets are not used. In this study, `r bougieStatAll$nob`/`r bougieStatAll$total` (`r bougieStatAll$percentnob`%) of attempts did not utilise a bougie. This may indicate a training need, since few attempts omitted using a bougie following the SALAD training. There is a possibility that this oversight may have affected the results of the study. However, in group AAB, more participants who made a successful second intubation attempt did not use a bougie than those who were unsuccessful (`r bsuccs` vs `r bfail` respectively).
+
+
 
 ## Limitations
-This was a manikin study and as such, does not reflect clinical practice. For paramedics, most intubations they attempt will be at floor level and occur during a cardiac arrest, which is likely to result in some head and neck movement. The intubation attempts in the study by contrast were conducted on a static manikin at table height. In addition, the manikin could not be moved, so alternatrive positioning such as lateral head movement, or placing the patient in a Tredelenburg position, was not possible.
+This was a manikin study and as such, does not reflect clinical practice. For paramedics, most intubations they attempt will be at floor level and occur during a cardiac arrest, which is likely to result in some head and neck movement. The intubation attempts in the study by contrast were conducted on a static manikin at table height. In addition, the manikin could not be moved, so alternative positioning such as lateral head movement, or placing the patient in a Tredelenburg position, was not possible.
 
 While the study did use a thickened and opaque liquid as the vomit, it did not contain any solid material, and was not as odorous as real vomit.
 
-Finally, it was not possible to blind participants from their allocation, although they did not know that the second attempt was to be used to calculate the primary outcome. However, the researcher, acting as competent assistant did, and this may have inadvertently lead to bias. In addition, for the post-training intubation attempts, it is also possible that the researcher was too proactive in assisting with suctioning down the tube at the end of the attempt, resulting in 100% of post-training attemtps receiving tracheal suction.
+Finally, it was not possible to blind participants from their allocation, although they did not know that the second attempt was to be used to calculate the primary outcome. However, the researcher, acting as competent assistant did, and this may have inadvertently led to bias. In addition, for the post-training intubation attempts, it is also possible that the researcher was too proactive in assisting with suctioning down the tube at the end of the attempt, resulting in 100% of post-training attempts receiving tracheal suction.
+
 

@@ -1,2 +1,15 @@
 # Conclusion
 In this manikin study, following a brief training session, paramedics were able to intubate a soiled airway on their first attempt, significantly more often when using the SALAD technique.
+
+# Acknowledgements
+This study could not have been undertaken without the support and participation of paramedics working for Yorkshire Ambulance Service NHS Trust. In addition, the study has been supported by the National Institute for Health Research Clinical Research Network: Yorkshire and Humber. Finally, thanks goes to Dr. Jim DuCanto for his advice and support.
+
+# Funding
+This research study was funded by a College of Paramedics small research grant.
+
+# Study registration
+
+This study has been registered on ClinicalTrials.gov : NCT03599687. The protocol has been previously published in the British Paramedic Journal [@pilbery_soiled_2018].
+
+IRAS ID: 245954 
+

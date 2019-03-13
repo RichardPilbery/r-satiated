@@ -63,7 +63,6 @@ demographicsTotal <- satiated_data %>%
 
 `r demographicsTotal$total` participants took part in SATIATED, with an equal number in groups AAB and ABB. The groups were similar with respect to intubation attempts (successful or not) undertaken in the previous 12 months. The median number of years as a paramedic was 1.5 years less in group ABB, although the interquartile range was similar. `r demographicsTotal$familiar_SALAD_technique` participants had heard of the SALAD technique prior to the study, with a slightly higher number in group ABB (Table \@ref(tab:demoTable)).
 
-
 ```{r demoTable, echo=F, message=F, warning=F}
 
   kable(finaldemodf, booktabs=T, format=format, caption="Summary details of participants") %>%
@@ -168,9 +167,6 @@ demographicsTotal <- satiated_data %>%
 
 ```
 
-
-First-pass intubation success with and without SALAD on the second attempt, was `r round((primary_outcome$estimate1*100),1)`% vs `r round((primary_outcome$estimate2*100),1)`% respectively, a significant difference of `r round(diffPropPrimary*100,1)`% (95%CI `r paste(round(abs(primary_outcome$conf.high)*100,1),round(abs(primary_outcome$conf.low)*100,1),sep="--")`%, `r ifelse(primary_outcome$p.value < 0.0001, "p<0.0001", threesig(primary_outcome$p.value))`).
-
 ```{r times, echo=F, warning=F, message=F}
 
   timedf <- satiated_data2 %>%
@@ -216,7 +212,29 @@ timedf3 <- timedf %>%
 
 ```
 
-Figure \@ref(fig:boxplotint) summarises the intubation attempt times by participants in each randomisation group. For successful intubation attempts, group ABB was generally faster, except on attempt 2, where AAB intubated sooner (Table \@ref(tab:summarytime).
+First-pass intubation success with and without SALAD on the second attempt, was `r round((primary_outcome$estimate1*100),1)`% vs `r round((primary_outcome$estimate2*100),1)`% respectively, a significant difference of `r round(diffPropPrimary*100,1)`% (95%CI `r paste(round(abs(primary_outcome$conf.high)*100,1),round(abs(primary_outcome$conf.low)*100,1),sep="--")`%, `r ifelse(primary_outcome$p.value < 0.0001, "p<0.0001", threesig(primary_outcome$p.value))`). Figure \@ref(fig:boxplotint) summarises the intubation attempt times by participants in each randomisation group. For successful intubation attempts, group ABB was generally faster, except on attempt 2, where AAB intubated sooner (Table \@ref(tab:summarytime).
+
+```{r boxplotint, message=F, echo=F, warning=F, fig.cap="Intubation attempt times, stratified by randomisation sequence and attempt"}
+
+give.n <- function(x){
+  # https://stackoverflow.com/questions/3483203/create-a-boxplot-in-r-that-labels-a-box-with-the-sample-size-n
+  # Used data.frame instead of c so I could add 'n=' to label
+   #return(data.frame(y = (fivenum(x)[1])-2, label = paste0("n=",length(x))  ))
+    return(data.frame(y = 19, label = paste0("n=",length(x))  ))
+}
+
+ggplot(timedf2, aes(x = attempt, y = int_time, fill=randomseq)) +
+  geom_boxplot() +
+  #facet_wrap(~success) +
+  theme_minimal() +
+  theme(legend.position="top") +
+  scale_fill_brewer(name="Randomisation group") +
+  scale_y_continuous(name="Intubation attempt time (seconds)", breaks = seq(0,90,10), limits=c(15,90)) +
+  scale_x_discrete(name="Attempt number") +
+  stat_summary(fun.data = give.n, geom = "text", position = position_dodge(width = 0.75))
+
+```
+
 
 ```{r summarytime, echo=F, warning=F, message=F}
 
@@ -258,32 +276,10 @@ Figure \@ref(fig:boxplotint) summarises the intubation attempt times by particip
   kable(summarytimedf, booktabs=T, format=format, caption="Summary data of the differences between successful intubation attempts") %>%
     kable_styling("striped", latex_options = "striped") %>%
     column_spec(1, width = "4cm") %>%
-    add_header_above(c(" " = 1, "Attempt 1" = 2, "Attempt 2" = 2, "Attempt 3" = 2)) %>%
-    footnote(general="In order to be included in this table, both attempts had to be successful.")
+    add_header_above(c(" " = 1, "Attempt 1" = 2, "Attempt 2" = 2, "Attempt 3" = 2))
 
 ```
 
-
-```{r boxplotint, message=F, echo=F, warning=F, fig.cap="Intubation attempt times, stratified by randomisation sequence and attempt"}
-
-give.n <- function(x){
-  # https://stackoverflow.com/questions/3483203/create-a-boxplot-in-r-that-labels-a-box-with-the-sample-size-n
-  # Used data.frame instead of c so I could add 'n=' to label
-   #return(data.frame(y = (fivenum(x)[1])-2, label = paste0("n=",length(x))  ))
-    return(data.frame(y = 19, label = paste0("n=",length(x))  ))
-}
-
-ggplot(timedf2, aes(x = attempt, y = int_time, fill=randomseq)) +
-  geom_boxplot() +
-  #facet_wrap(~success) +
-  theme_minimal() +
-  theme(legend.position="top") +
-  scale_fill_brewer(name="Randomisation group") +
-  scale_y_continuous(name="Intubation attempt time (seconds)", breaks = seq(0,90,10), limits=c(15,90)) +
-  scale_x_discrete(name="Attempt number") +
-  stat_summary(fun.data = give.n, geom = "text", position = position_dodge(width = 0.75))
-
-```
 
 ```{r mdTable, message=F, warning=F, echo=F}
 
@@ -317,8 +313,10 @@ lotsmeans <- attemptDiff %>%
 
 ```
 
+## Mean difference in time to successful intubation
 
-## Mean difference in successful intubation attempts
+To determine the mean difference in time to successful intubation, a subset of the data comprised of participants who were successful in intubating on attempts 1 and 2, and attempts 1 and 3, was examined. There was a statistically significant difference between groups AAB (n=`r results$success1and2[results$randomseq=="AAB"]`) and ABB (n=`r results$success1and2[results$randomseq=="ABB"]`)  with respect to the mean difference in time taken to perform a successful intubation on attempts 1 and 2 (mean difference `r threesig(meanDiff1and2$estimate)` seconds, 95% CI `r threesig(meanDiff1and2$conf.low)`--`r threesig(meanDiff1and2$conf.high)` seconds, p=`r threesig(meanDiff1and2$p.value)`). There was no significant difference between groups AAB  (n=`r results$success1and3[results$randomseq=="AAB"]`) and ABB (n=`r results$success1and3[results$randomseq=="ABB"]`) with respect to mean difference in time taken to perform a successful intubation on attempts 1 and 3 (mean difference  `r threesig(meanDiff1and3$estimate)` seconds, 95% CI `r threesig(meanDiff1and3$conf.low)`--`r threesig(meanDiff1and3$conf.high)` seconds, p=`r threesig(meanDiff1and3$p.value)`)). Summary values for the mean differences are shown in Table \@ref(tab:lotsmeans). Finally, there was no significant difference in success rates on the third attempt between AAB and ABB `r round((secondary_outcome$estimate2*100),1)`% vs `r round((secondary_outcome$estimate1*100),1)`% respectively, a difference of `r round(diffPropSecondary*100,1)`% (95%CI `r paste(round(abs(secondary_outcome$conf.high)*100,1),round(abs(secondary_outcome$conf.low)*100,1),sep="--")`%, p=`r threesig(secondary_outcome$p.value)`).
+
 
 ```{r lotsmeans, echo=F, warning=F, message=F}
   
@@ -333,13 +331,11 @@ lotsmeans <- attemptDiff %>%
   kable(lotsmeans2, booktabs=T, format=format, caption="Summary data of successful intubation attempts") %>%
       kable_styling("striped", latex_options = "striped", full_width = F) %>%
       group_rows("Attempts 1 and 2", 1, 2) %>%
-      group_rows("Attempts 1 and 3", 3, 4)
+      group_rows("Attempts 1 and 3", 3, 4) %>%
+    footnote(general="In order to be included in this table, both attempts had to be successful.")
 
 ```
 
-
- There was a statistically significant difference between groups AAB (n=`r results$success1and2[results$randomseq=="AAB"]`) and ABB (n=`r results$success1and2[results$randomseq=="ABB"]`) with respect to the mean difference in time taken to perform a successful intubation on attempts 1 and 2 (mean difference `r threesig(meanDiff1and2$estimate)` seconds, 95% CI `r threesig(meanDiff1and2$conf.low)`--`r threesig(meanDiff1and2$conf.high)` seconds, p=`r threesig(meanDiff1and2$p.value)`). There was no significant difference between groups AAB  (n=`r results$success1and3[results$randomseq=="AAB"]`) and ABB (n=`r results$success1and3[results$randomseq=="ABB"]`) with respect to mean difference in time taken to perform a successful intubation on attempts 1 and 3 (mean difference  `r threesig(meanDiff1and3$estimate)` seconds, 95% CI `r threesig(meanDiff1and3$conf.low)`--`r threesig(meanDiff1and3$conf.high)` seconds, p=`r threesig(meanDiff1and3$p.value)`)). Summary values for the mean differences are shown in Table \@ref(tab:lotsmeans). Finally, there was no significant difference in success rates on the third attempt between AAB and ABB `r round((secondary_outcome$estimate2*100),1)`% vs `r round((secondary_outcome$estimate1*100),1)`% respectively, a difference of `r round(diffPropSecondary*100,1)`% (95%CI `r paste(round(abs(secondary_outcome$conf.high)*100,1),round(abs(secondary_outcome$conf.low)*100,1),sep="--")`%, p=`r threesig(secondary_outcome$p.value)`).
- 
  
 ```{r techniquePrep, error=F, message=F, warning=F, echo=F}
 
@@ -371,6 +367,47 @@ summaryExtras2 <- summaryExtras %>%
     attempt = paste("Attempt ", attempt, sep=" ")
   )
 
+summaryExtrasSF <- satiated_data2 %>%
+  group_by(randomseq) %>%
+  summarise(
+    bougie1S = sum(!is.na(bougie1) & attempt1SuccessV == "yes"),
+    bougie2S = sum(!is.na(bougie2) & attempt2SuccessV == "yes"),
+    bougie3S = sum(!is.na(bougie3) & attempt3SuccessV == "yes"),
+    assthold1S = sum(!is.na(assthold1) & attempt1SuccessV == "yes"),
+    assthold2S = sum(!is.na(assthold2) & attempt2SuccessV == "yes"),
+    assthold3S = sum(!is.na(assthold3) & attempt3SuccessV == "yes"),
+    sucinsitu1S = sum(!is.na(sucinsitu1) & attempt1SuccessV == "yes"),
+    sucinsitu2S = sum(!is.na(sucinsitu2) & attempt2SuccessV == "yes"),
+    sucinsitu3S = sum(!is.na(sucinsitu3) & attempt3SuccessV == "yes"),
+    nohole1S = sum(!is.na(Nohole1) & attempt1SuccessV == "yes"),
+    nohole2S = sum(!is.na(Nohole2) & attempt2SuccessV == "yes"),
+    nohole3S = sum(!is.na(Nohole3) & attempt3SuccessV == "yes"),
+    bougie1F = sum(!is.na(bougie1) & attempt1SuccessV == "no"),
+    bougie2F = sum(!is.na(bougie2) & attempt2SuccessV == "no"),
+    bougie3F = sum(!is.na(bougie3) & attempt3SuccessV == "no"),
+    assthold1F = sum(!is.na(assthold1) & attempt1SuccessV == "no"),
+    assthold2F = sum(!is.na(assthold2) & attempt2SuccessV == "no"),
+    assthold3F = sum(!is.na(assthold3) & attempt3SuccessV == "no"),
+    sucinsitu1F = sum(!is.na(sucinsitu1) & attempt1SuccessV == "no"),
+    sucinsitu2F = sum(!is.na(sucinsitu2) & attempt2SuccessV == "no"),
+    sucinsitu3F = sum(!is.na(sucinsitu3) & attempt3SuccessV == "no"),
+    nohole1F = sum(!is.na(Nohole1) & attempt1SuccessV == "no"),
+    nohole2F = sum(!is.na(Nohole2) & attempt2SuccessV == "no"),
+    nohole3F = sum(!is.na(Nohole3) & attempt3SuccessV == "no")
+  )
+
+summaryExtras3 <- summaryExtrasSF %>%
+  gather(key, value, -randomseq) %>%
+  mutate(
+    attempt = str_sub(key, -2, -2),
+    new_key = str_sub(key, 1, -3),
+    success = ifelse(str_sub(key, -1, -1) == "S", "Successful Attempt", "Failed Attempt")
+  ) %>%
+  select(randomseq, new_key, value, attempt, success) %>%
+  mutate(
+    attempt = paste("Attempt ", attempt, sep=" ")
+  )
+
   bougieProbe <- satiated_data2 %>%
   select(bougie1, bougie2, bougie3, randomseq, attempt1SuccessV, attempt2SuccessV, attempt3SuccessV) %>%
   mutate(
@@ -389,6 +426,28 @@ summaryExtras2 <- summaryExtras %>%
   select(success, bougie) %>%
   count(success, bougie)
 
+  saveRDS(bougieProbe,'data/bougie.rds')
+  
+   bougieProbeAttempt2 <- satiated_data2 %>%
+  select( bougie2, randomseq, attempt2SuccessV) %>%
+  mutate(
+    id = row_number()
+  ) %>%
+  gather(key, value, -randomseq, -id) %>%
+  mutate(
+    attempt = as.factor(ifelse(str_sub(key, 1, 6) == "bougie", str_sub(key,7,7) , substr(key,8,8)))
+  ) %>%
+  group_by(id, randomseq, attempt) %>%
+  summarise(
+    success = ifelse(value[grepl("Success",key)] == "yes", 1, 0),
+    bougie = ifelse(is.na(value[grepl("bougie", key)]), 1, 0)
+  ) %>%
+  ungroup() %>%
+  select(randomseq, success, bougie) %>%
+  count(randomseq, success, bougie) %>%
+     filter(randomseq=="AAB")
+   
+   saveRDS(bougieProbeAttempt2,'data/bougie2.rds')
 
 ```
  
@@ -397,19 +456,26 @@ summaryExtras2 <- summaryExtras %>%
 A number of techniques were utilised by participants to facillitate intubation (Figure \@ref(fig:techniqueBarchart)). This included asking the assistant to hold the suction catheter in the mouth (n=`r sum(summaryExtras2$value[summaryExtras2$new_key=="assthold"])`), and leaving with the suction in the mouth (although without occluding the suction vent hole, n=`r sum(summaryExtras2$value[summaryExtras2$new_key=="nohole"])`). In addition, there were also instances where participants did not use a bougie (n=`r sum(summaryExtras2$value[summaryExtras2$new_key=="bougie"])`, of which `r bougieProbe$n[1]` were successful attempts, and `r bougieProbe$n[3]` unsucessful) and forgot to occlude the suction vent hole on the catheter when attempting to clear the airway themselves (n=`r sum(summaryExtras2$value[summaryExtras2$new_key=="sucinsitu"])`).
  
  
-```{r techniqueBarchart, warning=F, message=F, echo=F, fig.cap="Bar chart showing techniques and omissions during intubation attempts, stratified by randomisation group and attempt number", fig.width=7}
+```{r techniqueBarchart, warning=F, message=F, echo=F, fig.cap="Bar chart showing techniques and omissions during intubation attempts, stratified by randomisation group, attempt number and intubation outcome", fig.width=7}
 
-  ggplot(summaryExtras2, aes(x = new_key, y = value, fill = randomseq)) +
+  # ggplot(summaryExtras2, aes(x = new_key, y = value, fill = randomseq)) +
+  # geom_bar(stat = "identity", position="dodge", colour="black") +
+  # facet_wrap(~attempt) +
+  # theme_minimal() +
+  # theme(legend.position="top") +
+  # scale_fill_brewer(name="Randomisation group") +
+  # scale_y_continuous(name="Number of occurances", breaks = seq(0,15,1), limits=c(0,15)) +
+  # scale_x_discrete(name="Technique adaptions/omissions", labels=c("Assistant\nheld\nsuction", "No bougie\nused", "Suction\nhole not\noccluded", "Suction left\nin situ"))
+
+ggplot(summaryExtras3, aes(x = new_key, y = value, fill = randomseq)) +
   geom_bar(stat = "identity", position="dodge", colour="black") +
-  facet_wrap(~attempt) +
+  facet_wrap(~attempt + success, dir="v", nrow=2, ncol=3) +
   theme_minimal() +
   theme(legend.position="top") +
-  scale_fill_brewer(name="Randomisation group") +
-  scale_y_continuous(name="Number of occurances", breaks = seq(0,15,1), limits=c(0,15)) +
-  scale_x_discrete(name="Technique adaptions/omissions", labels=c("Assistant\nheld\nsuction", "No bougie\nused", "Suction\nhole not\noccluded", "Suction left\nin situ"))
+  scale_fill_brewer(name="Randomisation sequence") +
+  scale_y_continuous(name="Number", breaks = seq(0,10,1), limits=c(0,10)) +
+  scale_x_discrete(name="Characteristic", labels=c("Assistant\nheld\nsuction", "No bougie\nused", "Suction\nhole not\noccluded", "Suction left\nin situ")) 
 
 ```
- 
- 
  
  

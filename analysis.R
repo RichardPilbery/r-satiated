@@ -546,6 +546,35 @@ summaryExtras <- satiated_data2 %>%
     nohole3 = sum(!is.na(Nohole3))
   )
 
+summaryExtrasSF <- satiated_data2 %>%
+  group_by(randomseq) %>%
+  summarise(
+    bougie1S = sum(!is.na(bougie1) & attempt1SuccessV == "yes"),
+    bougie2S = sum(!is.na(bougie2) & attempt2SuccessV == "yes"),
+    bougie3S = sum(!is.na(bougie3) & attempt3SuccessV == "yes"),
+    assthold1S = sum(!is.na(assthold1) & attempt1SuccessV == "yes"),
+    assthold2S = sum(!is.na(assthold2) & attempt2SuccessV == "yes"),
+    assthold3S = sum(!is.na(assthold3) & attempt3SuccessV == "yes"),
+    sucinsitu1S = sum(!is.na(sucinsitu1) & attempt1SuccessV == "yes"),
+    sucinsitu2S = sum(!is.na(sucinsitu2) & attempt2SuccessV == "yes"),
+    sucinsitu3S = sum(!is.na(sucinsitu3) & attempt3SuccessV == "yes"),
+    nohole1S = sum(!is.na(Nohole1) & attempt1SuccessV == "yes"),
+    nohole2S = sum(!is.na(Nohole2) & attempt2SuccessV == "yes"),
+    nohole3S = sum(!is.na(Nohole3) & attempt3SuccessV == "yes"),
+    bougie1F = sum(!is.na(bougie1) & attempt1SuccessV == "no"),
+    bougie2F = sum(!is.na(bougie2) & attempt2SuccessV == "no"),
+    bougie3F = sum(!is.na(bougie3) & attempt3SuccessV == "no"),
+    assthold1F = sum(!is.na(assthold1) & attempt1SuccessV == "no"),
+    assthold2F = sum(!is.na(assthold2) & attempt2SuccessV == "no"),
+    assthold3F = sum(!is.na(assthold3) & attempt3SuccessV == "no"),
+    sucinsitu1F = sum(!is.na(sucinsitu1) & attempt1SuccessV == "no"),
+    sucinsitu2F = sum(!is.na(sucinsitu2) & attempt2SuccessV == "no"),
+    sucinsitu3F = sum(!is.na(sucinsitu3) & attempt3SuccessV == "no"),
+    nohole1F = sum(!is.na(Nohole1) & attempt1SuccessV == "no"),
+    nohole2F = sum(!is.na(Nohole2) & attempt2SuccessV == "no"),
+    nohole3F = sum(!is.na(Nohole3) & attempt3SuccessV == "no")
+  )
+
 summaryExtras2 <- summaryExtras %>%
   gather(key, value, -randomseq) %>%
   mutate(
@@ -553,6 +582,18 @@ summaryExtras2 <- summaryExtras %>%
     new_key = str_sub(key, 1, -2)
   ) %>%
   select(randomseq, new_key, value, attempt) %>%
+  mutate(
+    attempt = paste("Attempt ", attempt, sep=" ")
+  )
+
+summaryExtras3 <- summaryExtrasSF %>%
+  gather(key, value, -randomseq) %>%
+  mutate(
+    attempt = str_sub(key, -2, -2),
+    new_key = str_sub(key, 1, -3),
+    success = ifelse(str_sub(key, -1, -1) == "S", "Successful Attempt", "Failed Attempt")
+  ) %>%
+  select(randomseq, new_key, value, attempt, success) %>%
   mutate(
     attempt = paste("Attempt ", attempt, sep=" ")
   )
@@ -566,6 +607,15 @@ ggplot(summaryExtras2, aes(x = new_key, y = value, fill = randomseq)) +
   scale_fill_brewer(name="Randomisation sequence") +
   scale_y_continuous(name="Number", breaks = seq(0,15,1), limits=c(0,15)) +
   scale_x_discrete(name="Characteristic", labels=c("Assistant\nheld\nsuction", "No bougie\nused", "Suction\nhole not\noccluded", "Suction left\nin situ"))
+
+ggplot(summaryExtras3, aes(x = new_key, y = value, fill = randomseq)) +
+  geom_bar(stat = "identity", position="dodge", colour="black") +
+  facet_wrap(~attempt + success, dir="v", nrow=2, ncol=3) +
+  theme_minimal() +
+  theme(legend.position="top") +
+  scale_fill_brewer(name="Randomisation sequence") +
+  scale_y_continuous(name="Number", breaks = seq(0,10,1), limits=c(0,10)) +
+  scale_x_discrete(name="Characteristic", labels=c("Assistant\nheld\nsuction", "No bougie\nused", "Suction\nhole not\noccluded", "Suction left\nin situ")) 
 
 ggplot(summaryExtras2, aes(x = new_key, y = value, fill = attempt)) +
   geom_bar(stat = "identity", position="dodge") +
@@ -596,3 +646,55 @@ bougieProbe <- satiated_data2 %>%
   select(success, bougie) %>%
   count(success, bougie)
 
+
+
+ggplot(summaryExtras2, aes(x = new_key, y = value, fill = randomseq)) +
+  geom_bar(stat = "identity", position="dodge", colour="black") +
+  facet_wrap(~attempt) +
+  theme_minimal() +
+  theme(legend.position="top", text=element_text(family="Arial"), axis.title.y = element_text(size=16,margin = margin(t = 0, r = 20, b = 0, l = 0)),axis.title.x = element_text(size=16,margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+  scale_fill_brewer(name="Randomisation group") +
+  scale_y_continuous(name="Number of occurences", breaks = seq(0,15,1), limits=c(0,15)) +
+  scale_x_discrete(name="Technique adaptions/omissions", labels=c("Assistant\nheld\nsuction", "No bougie\nused", "Suction\nhole not\noccluded", "Suction left\nin situ")) +
+  facet_wrap(~success)
+
+timedf <- satiated_data2 %>%
+  select(randomseq, attempt1intattemptStartV, attempt2intattemptStartV, attempt3intattemptStartV, attempt1intattemptCompletedV, attempt1intattemptTotalV, attempt2intattemptCompletedV, attempt2intattemptTotalV, attempt3intattemptCompletedV, attempt3intattemptTotalV, attempt1SuccessV, attempt2SuccessV, attempt3SuccessV) %>%
+  mutate(
+    id = row_number()
+  ) %>%
+  gather(key, value, -randomseq, -id) %>%
+  mutate(
+    attempt = as.factor(substr(key,8,8))
+  ) %>%
+  group_by(id, randomseq, attempt) %>%
+  summarise(
+    success = ifelse(value[grepl("Success",key)] == "yes", 1, 0),
+    time_to_int = as.integer(value[grepl("Start", key)]),
+    tot_time = as.integer(value[grepl("Total",key)]),
+    int_time = as.integer(value[grepl("Completed",key)])
+  )
+
+timedf2 <- timedf %>%
+  mutate(
+    success = ifelse(success == 1, "Successful Intubation", "Failed Intubation")
+  ) %>%
+  filter(success == "Successful Intubation")
+
+give.n <- function(x){
+  # https://stackoverflow.com/questions/3483203/create-a-boxplot-in-r-that-labels-a-box-with-the-sample-size-n
+  # Used data.frame instead of c so I could add 'n=' to label
+  #return(data.frame(y = (fivenum(x)[1])-2, label = paste0("n=",length(x))  ))
+  return(data.frame(y = 19, label = paste0("n=",length(x))  ))
+}
+
+ggplot(timedf2, aes(x = attempt, y = int_time, fill=randomseq)) +
+  geom_boxplot() +
+  #facet_wrap(~success) +
+  theme_minimal() +
+  theme(legend.position="top", text=element_text(size=16, family="Arial"), axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+  scale_fill_brewer(name="Randomisation group") +
+  #scale_fill_manual(name="Randomisation group", values=c("#edf3f5","#0069b4")) +
+  scale_y_continuous(name="Intubation attempt time (seconds)", breaks = seq(0,90,10), limits=c(15,90)) +
+  scale_x_discrete(name="Attempt number") +
+  stat_summary(fun.data = give.n, geom = "text", position = position_dodge(width = 0.75), size=5)
