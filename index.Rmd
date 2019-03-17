@@ -94,7 +94,7 @@ knitr::write_bib(c(
   
 ```
 `r if (!knitr:::is_html_output()) '
-# Soiled Airway Tracheal Intubation and the Effectiveness of Decontamination by Paramedics (SATIATED): A randomised controlled manikin study-
+# Soiled Airway Tracheal Intubation and the Effectiveness of Decontamination by Paramedics (SATIATED): A randomised controlled manikin study
 '`
 `r if (knitr:::is_html_output()) '
 # Preamble
