@@ -10,16 +10,16 @@ Yes! I have provided the [raw data](https://github.com/RichardPilbery/r-satiated
 1. Install [Docker](https://www.docker.com/products/docker-desktop)
 2. Run Docker
 3. Copy the [Dockerfile](https://raw.githubusercontent.com/RichardPilbery/r-satiated/master/Dockerfile) and place it into an empty folder
-3. Open a terminal window (or Powershell in Windoze) and change the directory to match the folder that contains the Dockerfile
-4. Enter the following command: `docker build ./`
-5. This might take a while, but you should end with a comment like *Successfully built IMAGEID*
-6. Run the command: `docker run --rm -p  8787:8787 -e PASSWORD=password IMAGEID` where IMAGEID is the IMAGEID value from step 5
-7. Open a browser window and head to: *http://127.0.0.1:8787*. Log in with the username: rstudio and password: password, if asked
-8. In the browser window, you should see an RStudio environment. ![RStudio](https://github.com/RichardPilbery/r-satiated/raw/master/images/8-RStudio.png)
-9. Scroll down to find the project file, called *r-satiated.Rproj* and click it. ![Open project](https://github.com/RichardPilbery/r-satiated/raw/master/images/9-Open-the-project.png)
-10. Now find the *Session* menu option along the top of the page and select *Restart R*. ![Restart R](https://github.com/RichardPilbery/r-satiated/raw/master/images/10-Restart-R.png)
-11. In the top-right hand window, click on the Build tab and then by clicking on the triangle next to the Build Book button, choose the *bookdown::pdf_book* option. ![Build book](https://github.com/RichardPilbery/r-satiated/raw/master/images/11-Build-PDF.png)
-12. Be patient, this might take a minute, but once completed a new window with the rendered PDF should appear. ![View PDF](https://github.com/RichardPilbery/r-satiated/raw/master/images/12-View-PDF.png)
+4. Open a terminal window (or Powershell in Windoze) and change the directory to match the folder that contains the Dockerfile
+5. Enter the following command: `docker build ./`
+6. This might take a while, but you should end with a comment like *Successfully built IMAGEID*
+7. Run the command: `docker run --rm -p  8787:8787 -e PASSWORD=password IMAGEID` where IMAGEID is the IMAGEID value from step 6
+8. Open a browser window and head to: *http://127.0.0.1:8787*. Log in with the username: rstudio and password: password, if asked
+9. In the browser window, you should see an RStudio environment. ![RStudio](https://github.com/RichardPilbery/r-satiated/raw/master/images/8-RStudio.png)
+10. Scroll down to find the project file, called *r-satiated.Rproj* and click it. ![Open project](https://github.com/RichardPilbery/r-satiated/raw/master/images/9-Open-the-project.png)
+11. Now find the *Session* menu option along the top of the page and select *Restart R*. ![Restart R](https://github.com/RichardPilbery/r-satiated/raw/master/images/10-Restart-R.png)
+12. In the top-right hand window, click on the Build tab and then by clicking on the triangle next to the Build Book button, choose the *bookdown::pdf_book* option. ![Build book](https://github.com/RichardPilbery/r-satiated/raw/master/images/11-Build-PDF.png)
+13. Be patient, this might take a minute, but once completed a new window with the rendered PDF should appear. ![View PDF](https://github.com/RichardPilbery/r-satiated/raw/master/images/12-View-PDF.png)
 
 ## Funding
 This study has been funded by a College of Paramedics small research grant. If you are a full member of the College, you are eligible to apply. Visit the [Research and Development Advisory Committee](https://www.collegeofparamedics.co.uk/college-governance/structure/research_and_audit_committee) page.
