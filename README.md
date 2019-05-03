@@ -15,7 +15,7 @@ Yes! I have provided the [raw data](https://github.com/RichardPilbery/r-satiated
 6. This might take a while, but you should end with a comment like *Successfully built IMAGEID*
 7. Run the command: `docker run --rm -p  8787:8787 -e PASSWORD=password IMAGEID` where IMAGEID is the IMAGEID value from step 6
 8. Open a browser window and head to: *http://127.0.0.1:8787*. Log in with the username: rstudio and password: password, if asked
-9. In the browser window, you should see an RStudio environment. ![RStudio](https://github.com/RichardPilbery/r-satiated/raw/master/images/8-RStudio.png)
+9. In the browser window, you should see an RStudio environment. Open the folder named: *r-satiated-master* ![RStudio](https://github.com/RichardPilbery/r-satiated/raw/master/images/8-RStudio.png)
 10. Scroll down to find the project file, called *r-satiated.Rproj* and click it. ![Open project](https://github.com/RichardPilbery/r-satiated/raw/master/images/9-Open-the-project.png)
 11. Now find the *Session* menu option along the top of the page and select *Restart R*. ![Restart R](https://github.com/RichardPilbery/r-satiated/raw/master/images/10-Restart-R.png)
 12. In the top-right hand window, click on the Build tab and then by clicking on the triangle next to the Build Book button, choose the *bookdown::pdf_book* option. ![Build book](https://github.com/RichardPilbery/r-satiated/raw/master/images/11-Build-PDF.png)
